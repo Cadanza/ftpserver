@@ -1,26 +1,27 @@
 mod user;
-
 use log::LevelFilter;
 use std::env;
 use std::assert;
 use std::thread;
 use std::net::{TcpListener, TcpStream, Shutdown};
-use std::io::{Read, Write};
 use user::user::User;
+use std::sync::atomic::{AtomicBool, Ordering};
+use std::sync::Arc;
+use ctrlc;
 
-fn handle_client(mut stream : TcpStream){
 
-    stream.write(b"220 hello\n").unwrap();
-    stream.flush();
-
-    thread::sleep_ms(5000);
-}
 
 fn main() {
 
     let _logger = simple_logging::log_to_file("test.log", LevelFilter::Info);
 
-    log::info!("coucou");
+    let running = Arc::new(AtomicBool::new(false));
+
+    let r = running.clone();
+
+    ctrlc::set_handler(move || {
+        r.store(true, Ordering::SeqCst);
+    }).expect("Ertror setting Ctrl-C handler");
     
     let args : Vec<String> = env::args().collect();
     
@@ -33,24 +34,35 @@ fn main() {
 
     let listener = TcpListener::bind(addr).unwrap();
 
-        for stream in listener.incoming() {
+    listener.set_nonblocking(true).unwrap();
 
-            match stream{
-                Ok(stream) => {
-                    log::info!("new connection {}",stream.peer_addr().unwrap() );
-                    //let mut u = User{ server_stream : stream};
-                    thread::spawn(move || {
-                        //u.run()
-                        handle_client(stream);
-                    });
-                }
-                Err(e) => {
-                    println!("erreur {}", e);
-                }
+
+
+    for stream in listener.incoming() {
+
+
+
+        match stream{
+            Ok(stream) => {
+                log::info!("new connection {}",stream.peer_addr().unwrap() );
+                let mut u = User{ server_stream : stream};
+                thread::spawn(move || {
+                    u.run()
+                });
             }
-            
+            Err(_) => {
+            }
         }
-       // drop(listener);
+
+        if running.load(Ordering::SeqCst){
+            break;
+        }
+        
+    }
+    
+
+    println!("bye");
+    drop(listener);
     
 
 
