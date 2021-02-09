@@ -1,16 +1,11 @@
 mod user;
+mod breaker;
 
 use log::LevelFilter;
-use std::env;
-use std::assert;
-use std::thread;
+use std::{env, assert, thread};
 use std::net::TcpListener;
 use user::user::User;
-use std::sync::atomic::{AtomicBool, Ordering};
-use std::sync::Arc;
-use ctrlc;
-
-
+use breaker::breaker::EscapeHandler;
 
 fn main() {
 
@@ -27,16 +22,9 @@ fn main() {
     let addr : &str = &*format!("127.0.0.1:{}", port);  // adresse du serveur
 
     // init du fichier de log
-    let _logger = simple_logging::log_to_file("server.log", LevelFilter::Info);
+    simple_logging::log_to_file("server.log", LevelFilter::Info).unwrap();
 
-    //init du SIGINT handler pour arrêter le serveur de manière propre.
-    let running = Arc::new(AtomicBool::new(false));
-
-    let r = running.clone();
-
-    ctrlc::set_handler(move || {
-        r.store(true, Ordering::SeqCst);
-    }).expect("Ertror setting Ctrl-C handler");
+    let mut handler = EscapeHandler::new();
     
     // stock les threads  pour les fermés proprement à la fermeture du serveur.
     let mut users : Vec<thread::JoinHandle<()>> = vec![];
@@ -46,6 +34,10 @@ fn main() {
 
     // on le met en mode non bloquant pour pouvoir sortir de la boucle en cas de SIGINT
     listener.set_nonblocking(true).unwrap();
+
+    log::info!("Server Open");
+
+    println!("Welcome to Axolotl FTP Server");
 
     // reception des demandes de collections.
     for stream in listener.incoming() {
@@ -69,7 +61,7 @@ fn main() {
         }   
 
         // si un SIGINT est repéré, on arrête de regarder les connections sur le ports.
-        if running.load(Ordering::SeqCst){
+        if handler.escape(){
             break;
         }
 

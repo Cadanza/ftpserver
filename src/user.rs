@@ -4,9 +4,10 @@ mod messages;
 #[path = "./FTPComm/code.rs"]
 mod code;
 
+
 pub mod user{
     use std::net::TcpStream;
-    use std::io::{Read, Write};
+    use std::io::{BufRead, BufReader, Write};
     use super::messages::messages;
     use super::code::code;
     
@@ -17,9 +18,27 @@ pub mod user{
 
     impl User{
 
-        pub fn run(&mut self){            
+        pub fn run(&mut self){    
+            
+            let mut request = String::new();
+            let mut read_buffer = BufReader::new(self.server_stream.try_clone().unwrap());
+            let data : Vec<&str>;
+
             self.connect();
-            loop{}
+            loop{
+                read_buffer.read_line(&mut request).unwrap();
+
+                log::info!("recieve > {}", request);
+
+                data = request.split(" ").collect();
+
+                
+
+                self.server_stream.flush().unwrap();
+
+                if 
+
+            }
         }
 
         fn connect(&mut self){
@@ -34,7 +53,7 @@ pub mod user{
 
             let tcp_req : &[u8] = req.as_bytes();
 
-            log::info!("{}", log_req);
+            log::info!("send => {}", log_req);
 
             self.server_stream.write(tcp_req).unwrap();
                 
