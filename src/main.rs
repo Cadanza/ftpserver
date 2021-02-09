@@ -7,6 +7,16 @@ use std::net::TcpListener;
 use user::user::User;
 use breaker::breaker::EscapeHandler;
 
+///
+/// # main function of server who handle users connexion
+/// 
+/// * author : Saulquin Clément/Aurélie
+/// * version : 1.0
+/// 
+/// - Initialize TCP communication
+/// - Listen all connexion:
+///     - when a new user is connect, min function launch user thread
+/// 
 fn main() {
 
     //récupération des arguments passé en ligne de commande
