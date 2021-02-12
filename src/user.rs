@@ -5,17 +5,18 @@ mod messages;
 mod code;
 
 #[path = "./FtpHandler.rs"]
-mod FtpHandler;
+mod ftp_handler;
 
 
 /// # User object who communicate with user
 pub mod user{
     use std::net::TcpStream;
     use std::io::{BufRead, BufReader, Write};
-    use std::io::prelude::*;
+    use std::sync::mpsc;
     use super::messages::messages::*;
     use super::code::code::*;
-    use super::FtpHandler::FtpHandler;
+    use super::ftp_handler::ftp_handler;
+    use std::time::Duration;
     
     
     /// # Structure of an user of server
@@ -23,6 +24,7 @@ pub mod user{
     /// Contains TcpStream to send request to user
     pub struct User{
         pub server_stream : TcpStream,
+        pub stop : mpsc::Receiver<bool>,
     }
 
     impl User{
@@ -31,23 +33,40 @@ pub mod user{
         /// call by server tu handle (send and receive) users request in independant thread 
         /// 
         pub fn run(&mut self){    
+
+            self.server_stream.set_read_timeout(Some(Duration::new(1, 0))).unwrap();
             
-            let request = String::new();
+            let mut request = String::new();
             let mut read_buffer = BufReader::new(self.server_stream.try_clone().unwrap());
-            let mut data : Vec<&str>;
+
+            let mut handler : ftp_handler::FtpHandler = ftp_handler::new();
+
 
             self.connect();
-            loop{
-                read_buffer.read_line(&mut request).unwrap();
+            
+            while handler.running(){
 
-                log::info!("recieve > {}", request);
+                match self.stop.try_recv() {
+                    Ok(true) => {
+                        self.send_request((BYE, BYE_MES));
+                        break;
+                    }
+                    _ => {}
+                }
 
-                data = request.split(" ").collect();
+                request.clear();
+                
+                match read_buffer.read_line(&mut request){
+                    Ok(_) => {
+                        self.send_request(handler.request_handler(
+                            request.lines().next().unwrap().split(" ").collect()));
 
-                self.send_request(FtpHandler::request_handler(data));
+                        log::info!("recieve => {}", request);
+                    },
+                    Err(_) => {}
+                }
 
                 self.server_stream.flush().unwrap();
-
 
             }
         }

@@ -6,6 +6,7 @@ use std::{env, assert, thread};
 use std::net::TcpListener;
 use user::user::User;
 use breaker::breaker::EscapeHandler;
+use std::sync::mpsc::{self, TryRecvError};
 
 ///
 /// # main function of server who handle users connexion
@@ -37,7 +38,7 @@ fn main() {
     let mut handler = EscapeHandler::new();
     
     // stock les threads  pour les fermés proprement à la fermeture du serveur.
-    let mut users : Vec<thread::JoinHandle<()>> = vec![];
+    let mut users : Vec<(thread::JoinHandle<()>, mpsc::Sender<bool>) > = vec![];
     
     //init du TCP listener
     let listener = TcpListener::bind(addr).unwrap();
@@ -49,21 +50,25 @@ fn main() {
 
     println!("Welcome to Axolotl FTP Server");
 
+    
+
     // reception des demandes de collections.
     for stream in listener.incoming() {
 
         match stream{   //si qq se connectte
             Ok(stream) => {
+                
+                let (s, r): (mpsc::Sender<bool>, mpsc::Receiver<bool>) = mpsc::channel();
 
                 log::info!("new connection {}",stream.peer_addr().unwrap() );   // on inscrit le connection dans les log
 
-                let mut u = User{ server_stream : stream};  // création de l'utilisateur
+                let mut u = User{ server_stream : stream, stop : r};  // création de l'utilisateur
 
                 let t = thread::spawn(move || { //lancement du thread
                     u.run()
                 });
 
-                users.push(t);  // on rajoute le thread
+                users.push((t, s));  // on rajoute le thread
                 
             }
             Err(_) => {
@@ -77,12 +82,14 @@ fn main() {
 
     }
     
+    println!("hello");
 
     //fermeture du serveur
     drop(listener);
 
-    for tr in users{
-        tr.join().unwrap();
+    for (jh, sd) in users{
+        sd.send(true).unwrap();
+        jh.join().unwrap();
     }
     
     println!("Server close");

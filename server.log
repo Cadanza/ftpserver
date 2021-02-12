@@ -1,1 +1,11 @@
-[00:00:10.564] (7fb3d85a8640) INFO   new connection 127.0.0.1:44610
+[00:00:00.000] (7fe1973fa640) INFO   Server Open
+[00:00:16.377] (7fe1973fa640) INFO   new connection 127.0.0.1:44864
+[00:00:16.378] (7fe1971f5700) INFO   send => 220 FTP Server (Axolotl FTP)
+
+[00:00:20.671] (7fe1971f5700) INFO   send => 331 Please specify the password
+
+[00:00:20.671] (7fe1971f5700) INFO   recieve => USER anonymous
+
+[00:00:23.739] (7fe1971f5700) INFO   send => 221 Session close, bye bye!
+
+[00:00:23.739] (7fe1973fa640) INFO   server close
