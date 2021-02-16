@@ -8,7 +8,6 @@ pub mod ftp_handler{
     use super::code::code::*;
     use super::messages::messages::*;
     use std::net::TcpStream;
-    use const_format::concatcp;
 
     pub struct FtpHandler{
         running : bool,
@@ -31,7 +30,7 @@ pub mod ftp_handler{
             //let arg_pop : Option<&str> = data.pop();
             let command : &str = data[0];
             let arg_pop : Option<&str> = data.pop();
-
+            
 
             println!("{}", command);
 
@@ -47,7 +46,7 @@ pub mod ftp_handler{
 
                 //"LIST" => return self.list_handler(),
 
-                "PASV" => return self.passiv_handler(),
+                "PASV" => return self.passiv_handler(&mut String::new()),
 
                 _ => return self.no_found_handler(),
 
@@ -111,31 +110,51 @@ pub mod ftp_handler{
         //     return  ;
         // }
 
-        fn passiv_handler(&mut self) -> (Code, Message){
-            const p1 : &str = "205";
-            const p2 : &str = "179";
-            let adr = format!("127.0.0.1:55055");
+        fn passiv_handler(&mut self, s : & mut String) -> (Code, Message){
 
-            let ret_m : Message = concatcp!(PASSIF_MODE_M, " (127,0,0,1,", p1, ",", p2, ")");          
+            let port : u16;
+            let up1 : u16;
+            let up2 : u16;
 
+            let p = self.search_free_port();
 
-            match TcpStream::connect(adr){
-                Ok(stream) => {
-                    println!("yes");
-                    self.data_port = Some(stream);
-                    return (PASSIF_MODE_C, ret_m);
-                },
-                //_ => return (BAD_COM_SEQ_C, BAD_COM_SEQ_M),
-                Err(m) => {
-                    println!("{:?}", m);
-                    return (BAD_COM_SEQ_C, BAD_COM_SEQ_M);
-                }
+            if p.is_none(){
+                return (SERVICE_UNA_C, SERVICE_UNA_M);
             }
+
+            self.data_port = Some(p.unwrap());
+            port = self.data_port.as_ref().unwrap().local_addr().unwrap().port();
+            up2 = port%256;
+            up1 = (port-up2)/256;
+            
+            let m =format!("(127,0,0,1,{},{})", up1, up2);
+            
+            let ms = PASSIF_MODE_M;
+
+            let rm : String = format!("{} {}", ms, m);
+
+
+            s.push_str(&rm);
+
+            return (PASSIF_MODE_C, &s[..]);
         }
+
 
         pub fn running(&mut self) -> bool{
             return self.running;
         }
+
+        fn search_free_port(&mut self) -> Option<TcpStream>{
+            for port in 1025..65535{
+                match TcpStream::connect(("127.0.0.1", port)){
+                    Ok(l) => return Some(l),
+                    _ => {}
+                }
+            }
+
+            return None;
+        }
+
 
         
     }

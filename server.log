@@ -1,24 +1,23 @@
-[00:00:00.000] (7fd1dac18640) INFO   Server Open
-[00:00:05.522] (7fd1dac18640) INFO   new connection 127.0.0.1:44058
-[00:00:05.522] (7fd1daa13700) INFO   send => 220 FTP Server (Axolotl FTP)
+[00:00:00.000] (7f113adfe640) INFO   Server Open
+[00:00:12.734] (7f113adfe640) INFO   new connection 127.0.0.1:40536
+[00:00:12.734] (7f113abf9700) INFO   send => 220 FTP Server (Axolotl FTP)
 
-[00:00:10.432] (7fd1daa13700) INFO   send => 331 Please specify the password
+[00:00:17.146] (7f113abf9700) INFO   send => 331 Please specify the password
 
-[00:00:10.432] (7fd1daa13700) INFO   recieve => USER anonymous
+[00:00:17.146] (7f113abf9700) INFO   recieve => USER anonymous
 
-[00:00:13.748] (7fd1daa13700) INFO   send => 230 Session open
+[00:00:20.912] (7f113abf9700) INFO   send => 230 Session open
 
-[00:00:13.748] (7fd1daa13700) INFO   recieve => PASS anonymous
+[00:00:20.912] (7f113abf9700) INFO   recieve => PASS anonymous
 
-[00:00:13.748] (7fd1daa13700) INFO   send => 202 Unknow command error
+[00:00:20.912] (7f113abf9700) INFO   send => 202 Unknow command error
 
-[00:00:13.748] (7fd1daa13700) INFO   recieve => SYST
+[00:00:20.912] (7f113abf9700) INFO   recieve => SYST
 
-[00:00:17.024] (7fd1daa13700) INFO   send => 503 Bad command sequences
+[00:00:28.253] (7f113abf9700) INFO   send => 503 Enterring passive mod  (127,0,0,1,205,179)
 
-[00:00:17.024] (7fd1daa13700) INFO   recieve => PASV
+[00:00:28.253] (7f113abf9700) INFO   recieve => PASV
 
-[00:00:39.308] (7fd1daa13700) INFO   send => 221 Session close, bye bye!
+[00:24:32.088] (7f113abf9700) INFO   send => 221 Session close, bye bye!
 
-[00:00:39.308] (7fd1daa13700) INFO   recieve => QUIT
-
+[00:24:32.089] (7f113adfe640) INFO   server close

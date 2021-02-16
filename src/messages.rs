@@ -15,4 +15,5 @@ pub mod messages{
     pub const UNKNOWN_COMMAND_MES : Message = "Unknow command error";
     pub const PASSIF_MODE_M : Message = "Enterring passive mod ";
     pub const BAD_COM_SEQ_M : Message = "Bad command sequences";
+    pub const SERVICE_UNA_M : Message = "Service is not available";
 }
