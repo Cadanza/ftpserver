@@ -6,7 +6,7 @@ use std::{env, assert, thread};
 use std::net::TcpListener;
 use user::user::User;
 use breaker::breaker::EscapeHandler;
-use std::sync::mpsc::{self, TryRecvError};
+use std::sync::mpsc::{self};
 
 ///
 /// # main function of server who handle users connexion
@@ -26,7 +26,7 @@ fn main() {
     assert!(args.len()>=3);
 
     //init des variables locales dont les valeurs sont passé par paramètre.
-    let _file_root : &String = &args[1];
+    let file_root : &String = &args[1];
     
     let port : &String = &args[2];
 
@@ -62,7 +62,7 @@ fn main() {
 
                 log::info!("new connection {}",stream.peer_addr().unwrap() );   // on inscrit le connection dans les log
 
-                let mut u = User{ server_stream : stream, stop : r};  // création de l'utilisateur
+                let mut u = User{ server_stream : stream, stop : r, path : file_root.to_string()};  // création de l'utilisateur
 
                 let t = thread::spawn(move || { //lancement du thread
                     u.run()

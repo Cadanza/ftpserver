@@ -7,13 +7,16 @@ mod messages;
 pub mod ftp_handler{
     use super::code::code::*;
     use super::messages::messages::*;
+    use std::net::TcpStream;
+    use const_format::concatcp;
 
     pub struct FtpHandler{
         running : bool,
+        data_port : Option<TcpStream>,
     }
 
     pub fn new() -> FtpHandler {
-        return FtpHandler{running : true};
+        return FtpHandler{running : true, data_port : None};
     }
 
     impl FtpHandler{
@@ -41,6 +44,10 @@ pub mod ftp_handler{
                 "PASS" => return self.pass_handler(arg_pop),
 
                 "QUIT" => return self.quit_handler(),
+
+                //"LIST" => return self.list_handler(),
+
+                "PASV" => return self.passiv_handler(),
 
                 _ => return self.no_found_handler(),
 
@@ -100,9 +107,37 @@ pub mod ftp_handler{
             return (BYE, BYE_MES);
         }
 
+        // fn list_handler(&mut self) -> (Code, Message){
+        //     return  ;
+        // }
+
+        fn passiv_handler(&mut self) -> (Code, Message){
+            const p1 : &str = "205";
+            const p2 : &str = "179";
+            let adr = format!("127.0.0.1:55055");
+
+            let ret_m : Message = concatcp!(PASSIF_MODE_M, " (127,0,0,1,", p1, ",", p2, ")");          
+
+
+            match TcpStream::connect(adr){
+                Ok(stream) => {
+                    println!("yes");
+                    self.data_port = Some(stream);
+                    return (PASSIF_MODE_C, ret_m);
+                },
+                //_ => return (BAD_COM_SEQ_C, BAD_COM_SEQ_M),
+                Err(m) => {
+                    println!("{:?}", m);
+                    return (BAD_COM_SEQ_C, BAD_COM_SEQ_M);
+                }
+            }
+        }
+
         pub fn running(&mut self) -> bool{
             return self.running;
         }
+
+        
     }
     
     

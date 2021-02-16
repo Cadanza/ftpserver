@@ -13,4 +13,6 @@ pub mod messages{
     pub const UNVA_SYNTAX_ARGS : Message = "Unvalid arguments error";
     pub const SESSION_OPEN_MES : Message = "Session open";
     pub const UNKNOWN_COMMAND_MES : Message = "Unknow command error";
+    pub const PASSIF_MODE_M : Message = "Enterring passive mod ";
+    pub const BAD_COM_SEQ_M : Message = "Bad command sequences";
 }

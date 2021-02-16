@@ -25,6 +25,7 @@ pub mod user{
     pub struct User{
         pub server_stream : TcpStream,
         pub stop : mpsc::Receiver<bool>,
+        pub path : String,
     }
 
     impl User{
