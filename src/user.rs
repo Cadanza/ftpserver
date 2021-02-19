@@ -1,21 +1,27 @@
-#[path = "./messages.rs"]
-mod messages;
-
-#[path = "./code.rs"]
-mod code;
-
-#[path = "./FtpHandler.rs"]
-mod ftp_handler;
-
 
 /// # User object who communicate with user
+#[path = "."]
 pub mod user{
+
+    #[path = "messages.rs"]
+    mod messages;
+
+    #[path = "code.rs"]
+    mod code;
+
+    #[path = "FtpHandler.rs"]
+    mod ftp_handler;
+
+    #[path = "command.rs"]
+    mod command;
+
+
     use std::net::TcpStream;
     use std::io::{BufRead, BufReader, Write};
     use std::sync::mpsc;
-    use super::messages::messages::*;
-    use super::code::code::*;
-    use super::ftp_handler::ftp_handler;
+    use messages::messages::*;
+    use code::code::*;
+    use ftp_handler::ftp_handler::FtpHandler;
     use std::time::Duration;
     
     
@@ -40,7 +46,7 @@ pub mod user{
             let mut request = String::new();
             let mut read_buffer = BufReader::new(self.server_stream.try_clone().unwrap());
 
-            let mut handler : ftp_handler::FtpHandler = ftp_handler::new();
+            let mut handler : FtpHandler = FtpHandler::new();
 
 
             self.connect();
@@ -59,8 +65,12 @@ pub mod user{
                 
                 match read_buffer.read_line(&mut request){
                     Ok(_) => {
-                        self.send_request(handler.request_handler(
-                            request.lines().next().unwrap().split(" ").collect()));
+                        
+                        let m = handler.request_handler(
+                            request.lines().next().unwrap().split(" ").collect()
+                        );
+
+                        m.execute(self.server_stream.try_clone().unwrap());
 
                         log::info!("recieve => {}", request);
                     },
@@ -88,7 +98,7 @@ pub mod user{
         /// 
         /// **request will be write on log file**
         /// 
-        fn send_request(&mut self, ret : (Code, Message)){
+        fn send_request(&mut self, ret : (Code, &str)){
             let req : &str =  &*format!("{} {}\n", ret.0, ret.1);
 
             let log_req : String = req.into();

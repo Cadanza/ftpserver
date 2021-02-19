@@ -2,18 +2,17 @@
 /// # Contains all messages send by server
 pub mod messages{
 
-    pub type Message = &'static str;
 
-    pub const WELCOM_MES : Message = "FTP Server (Axolotl FTP)";
-    pub const BYE_MES : Message = "Session close, bye bye!";
-    pub const SPEC_PASSWORD : Message = "Please specify the password";
-    pub const AUTH_ERROR : Message = "Please login with USER and PASS";
-    pub const ANO_ONLY : Message = "This FTP server is anonymous only";
-    pub const UNVA_SYNTAX_COMMAND : Message = "Unvalid command error";
-    pub const UNVA_SYNTAX_ARGS : Message = "Unvalid arguments error";
-    pub const SESSION_OPEN_MES : Message = "Session open";
-    pub const UNKNOWN_COMMAND_MES : Message = "Unknow command error";
-    pub const PASSIF_MODE_M : Message = "Enterring passive mod ";
-    pub const BAD_COM_SEQ_M : Message = "Bad command sequences";
-    pub const SERVICE_UNA_M : Message = "Service is not available";
+    pub const WELCOM_MES : &str = "FTP Server (Axolotl FTP)";
+    pub const BYE_MES : &str = "Session close, bye bye!";
+    pub const SPEC_PASSWORD : &str = "Please specify the password";
+    pub const AUTH_ERROR : &str = "Please login with USER and PASS";
+    pub const ANO_ONLY : &str = "This FTP server is anonymous only";
+    pub const UNVA_SYNTAX_COMMAND : &str = "Unvalid command error";
+    pub const UNVA_SYNTAX_ARGS : &str = "Unvalid arguments error";
+    pub const SESSION_OPEN_MES : &str = "Session open";
+    pub const UNKNOWN_COMMAND_MES : &str = "Unknow command error";
+    pub const PASSIF_MODE_M : &str = "Enterring passive mod ";
+    pub const BAD_COM_SEQ_M : &str = "Bad command sequences";
+    pub const SERVICE_UNA_M : &str = "Service is not available";
 }
