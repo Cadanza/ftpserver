@@ -1,6 +1,6 @@
 
 #[path = "."]
-pub mod userHandler{
+pub mod user_handler{
 
     #[path = "command.rs"]
     mod command;
@@ -24,7 +24,7 @@ pub mod userHandler{
     impl UserHandler{
         
 
-        pub fn user_handler_exe(&self, stream: TcpStream) {
+        pub fn handler(&self, stream: TcpStream) {
             let usm = &self.username;
             let c : Code;
             let m : &str;

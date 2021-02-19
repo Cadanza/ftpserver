@@ -6,39 +6,52 @@ pub mod ftp_handler{
     #[path = "command.rs"]
     mod command;
 
-    #[path = "code.rs"]
-    mod code;
-
-    #[path = "messages.rs"]
-    mod messages;
-
     #[path = "userHandler.rs"]
-    mod userHandler;
+    mod user_handler;
 
+    #[path = "unknowCommandHandler.rs"]
+    mod unknow_command_handler;
 
+    #[path = "passwordHandler.rs"]
+    mod password_handler;
 
-    use code::code::*;
-    use messages::messages::*;
+    #[path = "quitHandler.rs"]
+    mod quit_handler;
+
     use command::command::FtpCommand;
-    use std::net::TcpStream;
-    use userHandler::userHandler::*;
+    use std::net::{TcpStream, TcpListener};
+    use user_handler::user_handler::*;
+    use unknow_command_handler::unknow_command_handler::*;
+    use password_handler::password_handler::*;
+    use quit_handler::quit_handler::*;
 
     pub struct FtpHandler{
         running : bool,
+        passiv_listener : Option<TcpListener>,
     }
-
-    pub struct Nada{
-    }
-
-    impl FtpCommand for Nada{
-        fn execute(&self, stream : TcpStream){
-            //write_line(format!("{}{}", UNKNONW_COMMAND_C, UNKNOWN_COMMAND_MES), stream);
-        }
-    }
+    
 
     impl FtpCommand for UserHandler {
         fn execute(&self, stream : TcpStream){
-            self.user_handler_exe(stream);
+            self.handler(stream);
+        }
+    }
+
+    impl FtpCommand for UnknowCommandHandler {
+        fn execute(&self, stream : TcpStream){
+            self.handler(stream);
+        }
+    }
+
+    impl FtpCommand for PasswordHandler {
+        fn execute(&self, stream : TcpStream){
+            self.handler(stream);
+        }
+    }
+
+    impl FtpCommand for QuitHandler {
+        fn execute(&self, stream : TcpStream){
+            self.handler(stream);
         }
     }
 
@@ -46,16 +59,16 @@ pub mod ftp_handler{
 
     impl FtpHandler{
 
-            pub fn new() -> FtpHandler {
-        return FtpHandler{running : true};
-    }
+        pub fn new() -> FtpHandler {
+            return FtpHandler{running : true, passiv_listener : None};
+        }
 
         /// # Handle request send by user and call the good function to response at the rquest
         pub fn request_handler(&mut self, data : Vec<&str>) -> Box<dyn FtpCommand> {
                 
             let mut data_bis : Vec<String> = data.iter().map(|s | String::from(*s)).collect();
 
-            //let arg_pop : Option<&str> = data.pop();
+
             let command : &str = data[0];
             let arg_pop : Option<String> = data_bis.pop();
             
@@ -68,54 +81,22 @@ pub mod ftp_handler{
 
                 // "AUTH" => return (SESSION_NO_OPEN, AUTH_ERROR),
                 
-                // "PASS" => return self.pass_handler(arg_pop),
+                "PASS" => return Box::new(PasswordHandler{password : arg_pop}),
 
-                // "QUIT" => return self.quit_handler(),
+                "QUIT" => {
+                    self.running = false;
+                    return Box::new(QuitHandler{});
+                },
 
                 // "LIST" => return self.list_handler(),
 
                 // "PASV" => return self.passiv_handler(),
 
-                // _ => return self.no_found_handler(),
-
-                _ => return Box::new(Nada{}),
+                _ => return Box::new(UnknowCommandHandler{}),
 
             }
         }
 
-
-
-
-
-        // fn pass_handler(&mut self, psw : Option<&str>) -> (Code, &str){
-
-        //     if psw.is_none(){
-        //         return (SYNTAX_ARGS_ERROR, UNVA_SYNTAX_ARGS);
-        //     }
-
-        //     let password : &str = psw.unwrap();
-        //     let c : Code;
-        //     let m : &str;
-
-        //     if password == "anonymous" {
-        //         c = SESSION_OPEN;
-        //         m = SESSION_OPEN_MES;
-        //     } else {
-        //         c = SESSION_NO_OPEN;
-        //         m = ANO_ONLY;
-        //     }
-
-        //     return (c, m);
-        // }
-
-        // fn no_found_handler(&mut self) -> (Code, &str) {
-        //     return (UNKNONW_COMMAND_C, UNKNOWN_COMMAND_MES);
-        // }
-
-        // fn quit_handler(&mut self) -> (Code, &str){
-        //     self.running = false;
-        //     return (BYE, BYE_MES);
-        // }
 
         // // fn list_handler(&mut self) -> (Code, &str){
             
