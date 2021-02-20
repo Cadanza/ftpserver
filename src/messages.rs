@@ -15,4 +15,6 @@ pub mod messages{
     pub const PASSIF_MODE_M : &str = "Enterring passive mod ";
     pub const BAD_COM_SEQ_M : &str = "Bad command sequences";
     pub const SERVICE_UNA_M : &str = "Service is not available";
+    pub const DATA_COME_M : &str = "Here commes the directoly listing";
+    pub const DATA_SEND_M : &str = "Directory send Ok.";
 }

@@ -12,7 +12,7 @@ pub mod command {
         fn execute(&self, stream : TcpStream);
     }
 
-    pub fn write_line(message : String, stream : TcpStream){
+    pub fn write_line(message : String, stream : &mut TcpStream){
 
         let mut s = stream.try_clone().unwrap();
         let req : &str =  &*format!("{}\n", message);

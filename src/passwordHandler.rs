@@ -22,7 +22,7 @@ pub mod password_handler{
 
     impl PasswordHandler {
 
-        pub fn handler(&self, stream : TcpStream){
+        pub fn execute(&self, stream : &mut TcpStream){
 
             let c : Code;
             let m : &str;

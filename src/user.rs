@@ -46,7 +46,7 @@ pub mod user{
             let mut request = String::new();
             let mut read_buffer = BufReader::new(self.server_stream.try_clone().unwrap());
 
-            let mut handler : FtpHandler = FtpHandler::new();
+            let mut handler : FtpHandler = FtpHandler::new(self.server_stream.try_clone().unwrap());
 
 
             self.connect();
@@ -66,11 +66,9 @@ pub mod user{
                 match read_buffer.read_line(&mut request){
                     Ok(_) => {
                         
-                        let m = handler.request_handler(
+                        handler.request_handler(
                             request.lines().next().unwrap().split(" ").collect()
                         );
-
-                        m.execute(self.server_stream.try_clone().unwrap());
 
                         log::info!("recieve => {}", request);
                     },

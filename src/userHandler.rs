@@ -24,7 +24,7 @@ pub mod user_handler{
     impl UserHandler{
         
 
-        pub fn handler(&self, stream: TcpStream) {
+        pub fn execute(&self, stream: &mut TcpStream) {
             let usm = &self.username;
             let c : Code;
             let m : &str;
@@ -52,5 +52,6 @@ pub mod user_handler{
         }
         
     }
+
 
 }

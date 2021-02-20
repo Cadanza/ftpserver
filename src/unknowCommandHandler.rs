@@ -19,7 +19,7 @@ pub mod unknow_command_handler{
     pub struct UnknowCommandHandler {} 
 
     impl UnknowCommandHandler {
-        pub fn handler(&self, stream : TcpStream){
+        pub fn execute(&self, stream : &mut TcpStream){
             write_line(format!("{} {}", UNKNONW_COMMAND_C, UNKNOWN_COMMAND_MES), stream);
         }
     }

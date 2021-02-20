@@ -18,7 +18,7 @@ pub mod quit_handler{
     pub struct QuitHandler {} 
 
     impl QuitHandler {
-        pub fn handler(&self, stream : TcpStream){
+        pub fn execute(&self, stream : &mut TcpStream){
             write_line(format!("{} {}", BYE, BYE_MES), stream);
         }
     }

@@ -16,4 +16,6 @@ pub mod code{
     pub const PASSIF_MODE_C : Code = "227";
     pub const BAD_COM_SEQ_C : Code = "503";
     pub const SERVICE_UNA_C : Code = "421";
+    pub const DATA_COME_C : Code = "150";
+    pub const DATA_SEND_C : Code = "226";
 }

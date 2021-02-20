@@ -18,54 +18,42 @@ pub mod ftp_handler{
     #[path = "quitHandler.rs"]
     mod quit_handler;
 
+    #[path = "passifHandler.rs"]
+    mod passiv_handler;
+
+    #[path = "listHandler.rs"]
+    mod list_handler;
+
     use command::command::FtpCommand;
     use std::net::{TcpStream, TcpListener};
     use user_handler::user_handler::*;
     use unknow_command_handler::unknow_command_handler::*;
     use password_handler::password_handler::*;
     use quit_handler::quit_handler::*;
+    use passiv_handler::passiv_handler::*;
+    use list_handler::list_handler::*;
 
     pub struct FtpHandler{
         running : bool,
-        passiv_listener : Option<TcpListener>,
+        server_stream : TcpStream,
+        passiv_port : Option<u16>,
+        data_stream : Option<TcpStream>
     }
-    
-
-    impl FtpCommand for UserHandler {
-        fn execute(&self, stream : TcpStream){
-            self.handler(stream);
-        }
-    }
-
-    impl FtpCommand for UnknowCommandHandler {
-        fn execute(&self, stream : TcpStream){
-            self.handler(stream);
-        }
-    }
-
-    impl FtpCommand for PasswordHandler {
-        fn execute(&self, stream : TcpStream){
-            self.handler(stream);
-        }
-    }
-
-    impl FtpCommand for QuitHandler {
-        fn execute(&self, stream : TcpStream){
-            self.handler(stream);
-        }
-    }
-
-    
+        
 
     impl FtpHandler{
 
-        pub fn new() -> FtpHandler {
-            return FtpHandler{running : true, passiv_listener : None};
+        pub fn new(stream : TcpStream) -> FtpHandler {
+            return FtpHandler{running : true, 
+                server_stream : stream,
+                passiv_port : None, 
+                data_stream : None};
         }
 
         /// # Handle request send by user and call the good function to response at the rquest
-        pub fn request_handler(&mut self, data : Vec<&str>) -> Box<dyn FtpCommand> {
-                
+        pub fn request_handler(&mut self, data : Vec<&str>) {
+            
+
             let mut data_bis : Vec<String> = data.iter().map(|s | String::from(*s)).collect();
 
 
@@ -77,22 +65,48 @@ pub mod ftp_handler{
 
             match command{
 
-                "USER" => return Box::new(UserHandler{username : arg_pop}),
+                "USER" => UserHandler{username : arg_pop}.execute(&mut self.server_stream),
+                
 
                 // "AUTH" => return (SESSION_NO_OPEN, AUTH_ERROR),
                 
-                "PASS" => return Box::new(PasswordHandler{password : arg_pop}),
+                "PASS" => PasswordHandler{password : arg_pop}.execute(&mut self.server_stream),
 
                 "QUIT" => {
                     self.running = false;
-                    return Box::new(QuitHandler{});
+                    QuitHandler{}.execute(&mut self.server_stream);
                 },
 
-                // "LIST" => return self.list_handler(),
+                //"LIST" => ListHandler{port : self.passiv_port}.execute(&mut self.server_stream),
 
-                // "PASV" => return self.passiv_handler(),
+                "PASV" => {
+                    self.passiv_port = self.search_free_port();
 
-                _ => return Box::new(UnknowCommandHandler{}),
+                    PassivHandler{port : self.passiv_port}.execute(&mut self.server_stream);
+
+                    match self.passiv_port {
+                        Some(port) => {
+                            let l = TcpListener::bind(("127.0.0.1", port)).unwrap();
+
+                            for data_stream in l.incoming(){
+                                match data_stream {
+                                    Ok(stream) => {
+                                        self.data_stream = Some(stream);
+                                    },
+                                    _ => {}
+                                }
+                                break;
+                            }
+                        },
+                        _ => {}
+                    }
+                    
+
+
+                    
+                },
+
+                _ => UnknowCommandHandler{}.execute(&mut self.server_stream),
 
             }
         }
@@ -146,16 +160,20 @@ pub mod ftp_handler{
             return self.running;
         }
 
-        // fn search_free_port(&mut self) -> Option<TcpListener>{
-        //     for port in 1025..65535{
-        //         match TcpListener::bind(("127.0.0.1", port)){
-        //             Ok(l) => return Some(l),
-        //             _ => {}
-        //         }
-        //     }
 
-        //     return None;
-        // }
+        fn search_free_port(&mut self) -> Option<u16>{
+            for port in 1025..65535{
+                match TcpListener::bind(("127.0.0.1", port)){
+                    Ok(l) => {
+                        drop(l);
+                        return Some(port);
+                    },
+                    _ => {}
+                }
+            }
+
+            return None;
+        }
 
 
         
