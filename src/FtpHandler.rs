@@ -24,14 +24,18 @@ pub mod ftp_handler{
     #[path = "listHandler.rs"]
     mod list_handler;
 
+    #[path  = "authHandler.rs"]
+    mod auth_handler;
+
     use command::command::FtpCommand;
-    use std::net::{TcpStream, TcpListener};
+    use std::net::{TcpStream, TcpListener, Shutdown};
     use user_handler::user_handler::*;
     use unknow_command_handler::unknow_command_handler::*;
     use password_handler::password_handler::*;
     use quit_handler::quit_handler::*;
     use passiv_handler::passiv_handler::*;
     use list_handler::list_handler::*;
+    use auth_handler::auth_handler::*;
 
     pub struct FtpHandler{
         running : bool,
@@ -68,7 +72,7 @@ pub mod ftp_handler{
                 "USER" => UserHandler{username : arg_pop}.execute(&mut self.server_stream),
                 
 
-                // "AUTH" => return (SESSION_NO_OPEN, AUTH_ERROR),
+                "AUTH" => AuthHandler{}.execute(&mut self.server_stream),
                 
                 "PASS" => PasswordHandler{password : arg_pop}.execute(&mut self.server_stream),
 
@@ -77,7 +81,24 @@ pub mod ftp_handler{
                     QuitHandler{}.execute(&mut self.server_stream);
                 },
 
-                //"LIST" => ListHandler{port : self.passiv_port}.execute(&mut self.server_stream),
+                "LIST" => {
+                    let dt : Option<TcpStream>;
+
+                    match &self.data_stream{
+                        Some(d) => dt = Some(d.try_clone().unwrap()),
+                        None => dt = None,
+                    }
+
+                    ListHandler{data_stream : dt}.execute(&mut self.server_stream);
+                    
+                    match &self.data_stream{
+                        Some(d) => d.shutdown(Shutdown::Both).expect("shutdown call failed"),
+                        None => {}
+                    }
+                    
+
+                    println!("ok3");
+                }
 
                 "PASV" => {
                     self.passiv_port = self.search_free_port();
@@ -98,12 +119,11 @@ pub mod ftp_handler{
                                 break;
                             }
                         },
-                        _ => {}
+                        None => {
+
+                        }
                     }
-                    
 
-
-                    
                 },
 
                 _ => UnknowCommandHandler{}.execute(&mut self.server_stream),
@@ -127,33 +147,6 @@ pub mod ftp_handler{
 
         // //     return (PASSIF_MODE_C, PASSIF_MODE_M);
         // // }
-
-        // fn passiv_handler(&mut self) -> (Code, &str){
-
-        //     let port : u16;
-        //     let up1 : u16;
-        //     let up2 : u16;
-
-        //     let p = self.search_free_port();
-
-        //     if p.is_none(){
-        //         return (SERVICE_UNA_C, SERVICE_UNA_M);
-        //     }
-
-        //     self.data_listener = Some(p.unwrap());
-        //     port = self.data_listener.as_ref().unwrap().local_addr().unwrap().port();
-        //     up2 = port%256;
-        //     up1 = (port-up2)/256;
-            
-        //     let m =format!("(127,0,0,1,{},{})", up1, up2);
-            
-        //     let ms = PASSIF_MODE_M;
-
-        //     let rm : String = format!("{}{}", ms, m);
-
-
-        //     return (PASSIF_MODE_C, Box::leak(rm.into_boxed_str()));
-        // }
 
 
         pub fn running(&mut self) -> bool{

@@ -14,16 +14,24 @@ pub mod command {
 
     pub fn write_line(message : String, stream : &mut TcpStream){
 
-        let mut s = stream.try_clone().unwrap();
         let req : &str =  &*format!("{}\n", message);
     
         let tcp_req : &[u8] = req.as_bytes();
     
         log::info!("send => {}", message);
     
-        s.write(tcp_req).unwrap();
+        stream.write(tcp_req).unwrap();
     
-        drop(s);
+    }
+
+    pub fn write_data(data : String, stream : &mut TcpStream){
+        let req : &str =  &*format!("{}", data);
+    
+        let tcp_req : &[u8] = req.as_bytes();
+    
+        //log::info!("send => {}", message);
+    
+        stream.write(tcp_req).unwrap();
     }
 
 }
