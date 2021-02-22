@@ -24,9 +24,6 @@ pub mod ftp_handler{
     #[path  = "authHandler.rs"]
     mod auth_handler;
 
-    #[path = "sessionNoOpen.rs"]
-    mod session_no_open_handler;
-
     use std::net::{TcpStream, Shutdown};
     use user_handler::user_handler::*;
     use unknow_command_handler::unknow_command_handler::*;
@@ -35,7 +32,6 @@ pub mod ftp_handler{
     use passiv_handler::passiv_handler::*;
     use list_handler::list_handler::*;
     use auth_handler::auth_handler::*;
-    use session_no_open_handler::session_no_open_handler::*;
 
     pub struct FtpHandler{
         running : bool,
@@ -90,11 +86,6 @@ pub mod ftp_handler{
 
                 "LIST" => {
 
-                    if !self.session_open(){
-                        SessionNoOpenHandler{}.execute(&mut self.server_stream);
-                        return;
-                    }
-
                     let dt : Option<TcpStream>;
 
                     match &self.data_stream{
@@ -102,7 +93,7 @@ pub mod ftp_handler{
                         None => dt = None,
                     }
 
-                    ListHandler{data_stream : dt}.execute(&mut self.server_stream);
+                    ListHandler{data_stream : dt, session_open : self.session_open()}.execute(&mut self.server_stream);
                     
                     match &self.data_stream{
                         Some(d) => d.shutdown(Shutdown::Both).expect("shutdown call failed"),
@@ -128,9 +119,6 @@ pub mod ftp_handler{
         pub fn running(&mut self) -> bool{
             return self.running;
         }
-
-
-
 
         fn session_open(&self) -> bool {
             return self.good_psw && self.good_psw;

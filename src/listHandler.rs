@@ -20,10 +20,21 @@ pub mod list_handler{
 
     pub struct ListHandler {
         pub data_stream : Option<TcpStream>,
+        pub session_open : bool,
     } 
 
     impl ListHandler {
         pub fn execute(&self, stream : &mut TcpStream){
+
+            if self.session_open {
+                write_line(format!("{} {}", SESSION_NO_OPEN, SESSION_NO_OPEN_MES), stream);
+            } else {
+                self.send_data(stream);
+            }
+
+        }
+
+        fn send_data(&self, stream : &mut TcpStream) {
 
             match &self.data_stream {
                 Some(dts) => {
@@ -31,19 +42,22 @@ pub mod list_handler{
                     let mut s = dts.try_clone().unwrap();
 
                     write_line(format!("{} {}", DATA_COME_C, DATA_COME_M), stream);
-                    let output = Command::new("ls").arg("-n").output().expect("failder to execute process");
                     
-                    let o = String::from_utf8_lossy(&output.stdout);
-                    write_data(format!("{}", o), &mut s);
+                    write_data(self.get_command_res(), &mut s);
 
                     write_line(format!("{} {}", DATA_SEND_C, DATA_SEND_M), stream);
 
                 },
                 None => {}
             }
+        }
 
-            
-            
+        fn get_command_res(&self) -> String {
+            let output = Command::new("ls").arg("-n").output().expect("failder to execute process");
+                    
+            let o = String::from_utf8_lossy(&output.stdout);
+
+            return format!("{}", o);
         }
 
     }
