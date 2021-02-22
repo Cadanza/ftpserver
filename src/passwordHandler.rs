@@ -18,6 +18,7 @@ pub mod password_handler{
 
     pub struct PasswordHandler {
         pub password : Option<String>,
+        pub good_user : bool,
     } 
 
     impl PasswordHandler {
@@ -29,26 +30,34 @@ pub mod password_handler{
             let pasw = &self.password;
             let good_psw : bool;
 
-            match pasw {
-                Some(p) => {
+            if !self.good_user{
+                c = SESSION_NO_OPEN;
+                m = SESSION_NO_OPEN_MES;
+                good_psw = false;
+            } else {
 
-                    if p == "anonymous" {
-                        c = SESSION_OPEN;
-                        m = SESSION_OPEN_MES;
-                        good_psw = true;
-                    } else {
-                        c = SESSION_NO_OPEN;
-                        m = ANO_ONLY;
+                match pasw {
+                    Some(p) => {
+    
+                        if p == "anonymous" {
+                            c = SESSION_OPEN;
+                            m = SESSION_OPEN_MES;
+                            good_psw = true;
+                        } else {
+                            c = SESSION_NO_OPEN;
+                            m = ANO_ONLY;
+                            good_psw = false;
+                        }
+                    },
+                    &None => {
+                        c = SYNTAX_ARGS_ERROR;
+                        m = UNVA_SYNTAX_ARGS;
                         good_psw = false;
                     }
-                },
-                &None => {
-                    c = SYNTAX_ARGS_ERROR;
-                    m = UNVA_SYNTAX_ARGS;
-                    good_psw = false;
                 }
+
             }
-                        
+                  
             write_line(format!("{} {}", c, m), stream);
 
             return good_psw;

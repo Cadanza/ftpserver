@@ -3,9 +3,6 @@
 #[path = "."]
 pub mod ftp_handler{
 
-    #[path = "common.rs"]
-    mod common;
-
     #[path = "userHandler.rs"]
     mod user_handler;
 
@@ -30,8 +27,7 @@ pub mod ftp_handler{
     #[path = "sessionNoOpen.rs"]
     mod session_no_open_handler;
 
-    use common::common::*;
-    use std::net::{TcpStream, TcpListener, Shutdown};
+    use std::net::{TcpStream, Shutdown};
     use user_handler::user_handler::*;
     use unknow_command_handler::unknow_command_handler::*;
     use password_handler::password_handler::*;
@@ -84,12 +80,7 @@ pub mod ftp_handler{
                 "AUTH" => AuthHandler{}.execute(&mut self.server_stream),
                 
                 "PASS" => {
-                    if self.good_user{
-                        self.good_psw = PasswordHandler{password : arg_pop}.execute(&mut self.server_stream);
-                    } else {
-                        SessionNoOpenHandler{}.execute(&mut self.server_stream);
-                    }
-                        
+                        self.good_psw = PasswordHandler{password : arg_pop, good_user : self.good_user}.execute(&mut self.server_stream);  
                 },
 
                 "QUIT" => {
@@ -121,34 +112,11 @@ pub mod ftp_handler{
 
                 "PASV" => {
 
-                    if !self.session_open(){
-                        SessionNoOpenHandler{}.execute(&mut self.server_stream);
-                        return;
-                    }
+                    let passiv_ret = PassivHandler{session_open : self.session_open()}.execute(&mut self.server_stream);
 
-                    self.data_port = search_free_port();
-
-                    PassivHandler{port : self.data_port}.execute(&mut self.server_stream);
-
-                    match self.data_port {
-                        Some(port) => {
-                            let l = TcpListener::bind(("127.0.0.1", port)).unwrap();
-
-                            for data_stream in l.incoming(){
-                                match data_stream {
-                                    Ok(stream) => {
-                                        self.data_stream = Some(stream);
-                                    },
-                                    _ => {}
-                                }
-                                break;
-                            }
-                        },
-                        None => {
-
-                        }
-                    }
-
+                    self.data_port = passiv_ret.0;
+                    self.data_stream = passiv_ret.1;
+                    
                 },
 
                 _ => UnknowCommandHandler{}.execute(&mut self.server_stream),

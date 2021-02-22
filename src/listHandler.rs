@@ -12,7 +12,7 @@ pub mod list_handler{
     mod common;
 
 
-    use std::net::{TcpStream, TcpListener};
+    use std::net::TcpStream;
     use messages::messages::*;
     use code::code::*;
     use common::common::*;
