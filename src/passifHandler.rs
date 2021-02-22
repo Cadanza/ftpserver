@@ -36,7 +36,7 @@ pub mod passiv_handler{
             let port : Option<u16>;
 
             let c : Code;
-            let m :  &str;
+            let m :  Message;
             let end : String;
 
             if self.session_open {
@@ -54,14 +54,14 @@ pub mod passiv_handler{
                         end = format!(" (127,0,0,1,{},{})", up1, up2);
                     }
                     None => {
-                        c = SERVICE_UNA_C;
-                        m = SERVICE_UNA_M;
+                        c = SERVICE_UNVA_C;
+                        m = SERVICE_UNVA_M;
                         end = String::from("");
                     }
                 }
             } else {
-                c = SESSION_NO_OPEN;
-                m = SESSION_NO_OPEN_MES;
+                c = SESSION_NO_OPEN_C;
+                m = SESSION_NO_OPEN_M;
                 end = String::from("");
                 port = None;
             }

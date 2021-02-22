@@ -27,7 +27,7 @@ pub mod user_handler{
         pub fn execute(&self, stream: &mut TcpStream) -> bool {
             let usm = &self.username;
             let c : Code;
-            let m : &str;
+            let m : Message;
             let good_user : bool;
 
 
@@ -35,19 +35,19 @@ pub mod user_handler{
                 Some(s) => {
                     let name : String = s.to_string();
                     if name == "anonymous"{
-                        c = NEED_PASSWORD;
-                        m = SPEC_PASSWORD;
+                        c = SPEC_PASSWORD_C;
+                        m = SPEC_PASSWORD_M;
                         good_user = true;
                     } else {
-                        c = SESSION_NO_OPEN;
-                        m = ANO_ONLY;
+                        c = SESSION_NO_OPEN_C;
+                        m = ANO_ONLY_M;
                         good_user = false;
                     }
 
                 },
                 &None => {
-                    c = SYNTAX_ARGS_ERROR;
-                    m = UNVA_SYNTAX_ARGS;
+                    c = UNVA_SYNTAX_ARGS_C;
+                    m = UNVA_SYNTAX_ARGS_M;
                     good_user = false;
                 }
             }

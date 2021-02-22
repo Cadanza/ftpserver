@@ -19,7 +19,7 @@ pub mod quit_handler{
 
     impl QuitHandler {
         pub fn execute(&self, stream : &mut TcpStream){
-            write_line(format!("{} {}", BYE, BYE_MES), stream);
+            write_line(format!("{} {}", BYE_C, BYE_M), stream);
         }
     }
 

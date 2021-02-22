@@ -51,7 +51,7 @@ pub mod user{
 
                 match self.stop.try_recv() {
                     Ok(true) => {
-                        self.send_request((BYE, BYE_MES));
+                        self.send_request((BYE_C, BYE_M));
                         break;
                     }
                     _ => {}
@@ -80,7 +80,7 @@ pub mod user{
         /// # send connection message to user
         /// 
         fn connect(&mut self){
-            self.send_request((WELCOME, WELCOM_MES));
+            self.send_request((WELCOME_C, WELCOM_M));
         }
 
         /// # send requestion to user

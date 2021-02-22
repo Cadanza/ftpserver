@@ -19,7 +19,7 @@ pub mod auth_handler{
 
     impl AuthHandler {
         pub fn execute(&self, stream : &mut TcpStream){
-            write_line(format!("{} {}", SESSION_NO_OPEN, AUTH_ERROR), stream);
+            write_line(format!("{} {}", SESSION_NO_OPEN_C, AUTH_ERROR_M), stream);
         }
     }
 

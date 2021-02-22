@@ -26,13 +26,13 @@ pub mod password_handler{
         pub fn execute(&self, stream : &mut TcpStream) -> bool{
 
             let c : Code;
-            let m : &str;
+            let m : Message;
             let pasw = &self.password;
             let good_psw : bool;
 
             if !self.good_user{
-                c = SESSION_NO_OPEN;
-                m = SESSION_NO_OPEN_MES;
+                c = SESSION_NO_OPEN_C;
+                m = SESSION_NO_OPEN_M;
                 good_psw = false;
             } else {
 
@@ -40,24 +40,24 @@ pub mod password_handler{
                     Some(p) => {
     
                         if p == "anonymous" {
-                            c = SESSION_OPEN;
-                            m = SESSION_OPEN_MES;
+                            c = SESSION_OPEN_C;
+                            m = SESSION_OPEN_M;
                             good_psw = true;
                         } else {
-                            c = SESSION_NO_OPEN;
-                            m = ANO_ONLY;
+                            c = SESSION_NO_OPEN_C;
+                            m = ANO_ONLY_M;
                             good_psw = false;
                         }
                     },
                     &None => {
-                        c = SYNTAX_ARGS_ERROR;
-                        m = UNVA_SYNTAX_ARGS;
+                        c = UNVA_SYNTAX_ARGS_C;
+                        m = UNVA_SYNTAX_ARGS_M;
                         good_psw = false;
                     }
                 }
 
             }
-                  
+
             write_line(format!("{} {}", c, m), stream);
 
             return good_psw;
