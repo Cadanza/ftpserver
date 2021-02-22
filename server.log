@@ -1,20 +1,17 @@
-[00:00:00.000] (7ffaa719c640) INFO   Server Open
-[00:00:03.643] (7ffaa719c640) INFO   new connection 127.0.0.1:46418
-[00:00:03.644] (7ffaa6f97700) INFO   send => 220 FTP Server (Axolotl FTP)
+[00:00:00.000] (7ff993dc6640) INFO   Server Open
+[00:00:15.838] (7ff993dc6640) INFO   new connection 127.0.0.1:47770
+[00:00:15.838] (7ff993bc1700) INFO   send => 220 FTP Server (Axolotl FTP)
 
-[00:00:04.329] (7ffaa6f97700) INFO   send => 530This FTP server is anonymous only
-[00:00:04.329] (7ffaa6f97700) INFO   recieve => USER aurelie
+[00:00:18.940] (7ff993bc1700) INFO   send => 331Please specify the password
+[00:00:18.940] (7ff993bc1700) INFO   recieve => USER anonymous
 
-[00:00:04.329] (7ffaa6f97700) INFO   send => 202 Unknow command error
-[00:00:04.330] (7ffaa6f97700) INFO   recieve => SYST
+[00:00:24.240] (7ff993bc1700) INFO   send => 530 This FTP server is anonymous only
+[00:00:24.240] (7ff993bc1700) INFO   recieve => PASS anbonimous
 
-[00:00:07.323] (7ffaa6f97700) INFO   send => 227 Enterring passive mod  (127,0,0,1,4,1)
-[00:00:07.324] (7ffaa6f97700) INFO   recieve => PASV
+[00:00:24.240] (7ff993bc1700) INFO   send => 202 Unknow command error
+[00:00:24.240] (7ff993bc1700) INFO   recieve => SYST
 
-[00:00:07.324] (7ffaa6f97700) INFO   send => 150 Here commes the directoly listing
-[00:00:07.325] (7ffaa6f97700) INFO   send => 226 Directory send Ok.
-[00:00:07.325] (7ffaa6f97700) INFO   recieve => LIST
+[00:00:28.195] (7ff993bc1700) INFO   send => 221 Session close, bye bye!
+[00:00:28.195] (7ff993bc1700) INFO   recieve => QUIT
 
-[00:01:18.199] (7ffaa6f97700) INFO   send => 221 Session close, bye bye!
-[00:01:18.199] (7ffaa6f97700) INFO   recieve => QUIT
-
+[00:00:31.196] (7ff993dc6640) INFO   server close

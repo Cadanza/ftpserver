@@ -1,16 +1,10 @@
     
 #[allow(dead_code)]
-pub mod command {
+pub mod common {
     use std::net::TcpStream;
-
+    use std::net::TcpListener;
     use std::io::Write;
 
-   
-    pub type Cmd = Box<dyn FtpCommand>;
-
-    pub trait FtpCommand {
-        fn execute(&self, stream : TcpStream);
-    }
 
     pub fn write_line(message : String, stream : &mut TcpStream){
 
@@ -32,6 +26,20 @@ pub mod command {
         //log::info!("send => {}", message);
     
         stream.write(tcp_req).unwrap();
+    }
+
+    pub fn search_free_port() -> Option<u16>{
+        for port in 1025..65535{
+            match TcpListener::bind(("127.0.0.1", port)){
+                Ok(l) => {
+                    drop(l);
+                    return Some(port);
+                },
+                _ => {}
+            }
+        }
+
+        return None;
     }
 
 }

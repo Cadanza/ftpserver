@@ -8,14 +8,14 @@ pub mod list_handler{
     #[path = "code.rs"]
     mod code;
 
-    #[path = "command.rs"]
-    mod command;
+    #[path = "common.rs"]
+    mod common;
 
 
     use std::net::{TcpStream, TcpListener};
     use messages::messages::*;
     use code::code::*;
-    use command::command::*;
+    use common::common::*;
     use std::process::Command;
 
     pub struct ListHandler {
@@ -35,12 +35,8 @@ pub mod list_handler{
                     
                     let o = String::from_utf8_lossy(&output.stdout);
                     write_data(format!("{}", o), &mut s);
-                    
-                    println!("ok1");
 
                     write_line(format!("{} {}", DATA_SEND_C, DATA_SEND_M), stream);
-
-                    println!("ok2");
 
                 },
                 None => {}

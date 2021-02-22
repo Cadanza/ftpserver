@@ -3,8 +3,8 @@
 #[path = "."]
 pub mod ftp_handler{
 
-    #[path = "command.rs"]
-    mod command;
+    #[path = "common.rs"]
+    mod common;
 
     #[path = "userHandler.rs"]
     mod user_handler;
@@ -27,7 +27,10 @@ pub mod ftp_handler{
     #[path  = "authHandler.rs"]
     mod auth_handler;
 
-    use command::command::FtpCommand;
+    #[path = "sessionNoOpen.rs"]
+    mod session_no_open_handler;
+
+    use common::common::*;
     use std::net::{TcpStream, TcpListener, Shutdown};
     use user_handler::user_handler::*;
     use unknow_command_handler::unknow_command_handler::*;
@@ -36,12 +39,15 @@ pub mod ftp_handler{
     use passiv_handler::passiv_handler::*;
     use list_handler::list_handler::*;
     use auth_handler::auth_handler::*;
+    use session_no_open_handler::session_no_open_handler::*;
 
     pub struct FtpHandler{
         running : bool,
         server_stream : TcpStream,
-        passiv_port : Option<u16>,
-        data_stream : Option<TcpStream>
+        data_port : Option<u16>,
+        data_stream : Option<TcpStream>,
+        good_user : bool,
+        good_psw : bool,
     }
         
 
@@ -50,8 +56,11 @@ pub mod ftp_handler{
         pub fn new(stream : TcpStream) -> FtpHandler {
             return FtpHandler{running : true, 
                 server_stream : stream,
-                passiv_port : None, 
-                data_stream : None};
+                data_port : None, 
+                data_stream : None,
+                good_user : false,
+                good_psw : false
+            };
         }
 
         /// # Handle request send by user and call the good function to response at the rquest
@@ -69,12 +78,19 @@ pub mod ftp_handler{
 
             match command{
 
-                "USER" => UserHandler{username : arg_pop}.execute(&mut self.server_stream),
+                "USER" => self.good_user = UserHandler{username : arg_pop}.execute(&mut self.server_stream),
                 
 
                 "AUTH" => AuthHandler{}.execute(&mut self.server_stream),
                 
-                "PASS" => PasswordHandler{password : arg_pop}.execute(&mut self.server_stream),
+                "PASS" => {
+                    if self.good_user{
+                        self.good_psw = PasswordHandler{password : arg_pop}.execute(&mut self.server_stream);
+                    } else {
+                        SessionNoOpenHandler{}.execute(&mut self.server_stream);
+                    }
+                        
+                },
 
                 "QUIT" => {
                     self.running = false;
@@ -82,6 +98,12 @@ pub mod ftp_handler{
                 },
 
                 "LIST" => {
+
+                    if !self.session_open(){
+                        SessionNoOpenHandler{}.execute(&mut self.server_stream);
+                        return;
+                    }
+
                     let dt : Option<TcpStream>;
 
                     match &self.data_stream{
@@ -95,17 +117,20 @@ pub mod ftp_handler{
                         Some(d) => d.shutdown(Shutdown::Both).expect("shutdown call failed"),
                         None => {}
                     }
-                    
-
-                    println!("ok3");
                 }
 
                 "PASV" => {
-                    self.passiv_port = self.search_free_port();
 
-                    PassivHandler{port : self.passiv_port}.execute(&mut self.server_stream);
+                    if !self.session_open(){
+                        SessionNoOpenHandler{}.execute(&mut self.server_stream);
+                        return;
+                    }
 
-                    match self.passiv_port {
+                    self.data_port = search_free_port();
+
+                    PassivHandler{port : self.data_port}.execute(&mut self.server_stream);
+
+                    match self.data_port {
                         Some(port) => {
                             let l = TcpListener::bind(("127.0.0.1", port)).unwrap();
 
@@ -132,46 +157,17 @@ pub mod ftp_handler{
         }
 
 
-        // // fn list_handler(&mut self) -> (Code, &str){
-            
-        // //     for stream in self.data_listener.as_ref().unwrap().incoming(){
-
-        // //         match stream {
-        // //             Ok(mut stream) => {
-        // //                 let o = Command::new("ls").arg("-n").output().expect("failed to execute process");
-        // //                 stream.write_all(&o.stdout).unwrap();
-        // //             }
-        // //             Err(_) => {}
-        // //         }
-        // //     }
-
-        // //     return (PASSIF_MODE_C, PASSIF_MODE_M);
-        // // }
-
-
         pub fn running(&mut self) -> bool{
             return self.running;
         }
 
 
-        fn search_free_port(&mut self) -> Option<u16>{
-            for port in 1025..65535{
-                match TcpListener::bind(("127.0.0.1", port)){
-                    Ok(l) => {
-                        drop(l);
-                        return Some(port);
-                    },
-                    _ => {}
-                }
-            }
 
-            return None;
+
+        fn session_open(&self) -> bool {
+            return self.good_psw && self.good_psw;
         }
-
-
         
     }
-    
-    
     
 }

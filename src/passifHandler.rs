@@ -8,14 +8,14 @@ pub mod passiv_handler{
     #[path = "code.rs"]
     mod code;
 
-    #[path = "command.rs"]
-    mod command;
+    #[path = "common.rs"]
+    mod common;
 
 
     use std::net::TcpStream;
     use messages::messages::*;
     use code::code::*;
-    use command::command::*;
+    use common::common::*;
 
     pub struct PassivHandler {
         pub port : Option<u16>,

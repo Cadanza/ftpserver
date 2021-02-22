@@ -82,14 +82,16 @@ fn main() {
 
     }
     
-    println!("hello");
-
     //fermeture du serveur
     drop(listener);
 
     for (jh, sd) in users{
-        sd.send(true).unwrap();
-        jh.join().unwrap();
+        match sd.send(true) {
+            Ok(_) => jh.join().unwrap(),
+            Err(_) => {}
+        }
+        
+        
     }
     
     println!("Server close");

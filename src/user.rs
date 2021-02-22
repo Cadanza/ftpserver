@@ -12,10 +12,6 @@ pub mod user{
     #[path = "FtpHandler.rs"]
     mod ftp_handler;
 
-    #[path = "command.rs"]
-    mod command;
-
-
     use std::net::TcpStream;
     use std::io::{BufRead, BufReader, Write};
     use std::sync::mpsc;

@@ -1,6 +1,6 @@
 
 #[path ="."]
-pub mod unknow_command_handler{
+pub mod session_no_open_handler{
 
     #[path = "messages.rs"]
     mod messages;
@@ -16,11 +16,11 @@ pub mod unknow_command_handler{
     use code::code::*;
     use common::common::*;
 
-    pub struct UnknowCommandHandler {} 
+    pub struct SessionNoOpenHandler {} 
 
-    impl UnknowCommandHandler {
+    impl SessionNoOpenHandler {
         pub fn execute(&self, stream : &mut TcpStream){
-            write_line(format!("{} {}", UNKNONW_COMMAND_C, UNKNOWN_COMMAND_MES), stream);
+            write_line(format!("{} {}", SESSION_NO_OPEN, SESSION_NO_OPEN_MES), stream);
         }
     }
 

@@ -8,13 +8,13 @@ pub mod password_handler{
     #[path = "code.rs"]
     mod code;
 
-    #[path = "command.rs"]
-    mod command;
+    #[path = "common.rs"]
+    mod common;
 
     use std::net::TcpStream;
     use messages::messages::*;
     use code::code::*;
-    use command::command::*;
+    use common::common::*;
 
     pub struct PasswordHandler {
         pub password : Option<String>,
@@ -22,11 +22,12 @@ pub mod password_handler{
 
     impl PasswordHandler {
 
-        pub fn execute(&self, stream : &mut TcpStream){
+        pub fn execute(&self, stream : &mut TcpStream) -> bool{
 
             let c : Code;
             let m : &str;
             let pasw = &self.password;
+            let good_psw : bool;
 
             match pasw {
                 Some(p) => {
@@ -34,20 +35,23 @@ pub mod password_handler{
                     if p == "anonymous" {
                         c = SESSION_OPEN;
                         m = SESSION_OPEN_MES;
+                        good_psw = true;
                     } else {
                         c = SESSION_NO_OPEN;
                         m = ANO_ONLY;
+                        good_psw = false;
                     }
                 },
                 &None => {
                     c = SYNTAX_ARGS_ERROR;
                     m = UNVA_SYNTAX_ARGS;
+                    good_psw = false;
                 }
             }
                         
             write_line(format!("{} {}", c, m), stream);
-            
 
+            return good_psw;
         }
     }
 
