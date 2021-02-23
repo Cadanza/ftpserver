@@ -1,13 +1,13 @@
 mod user;
 mod breaker;
 
+
 use log::LevelFilter;
 use std::{env, assert, thread};
 use std::net::TcpListener;
 use user::user::User;
 use breaker::breaker::EscapeHandler;
 use std::sync::mpsc::{self};
-
 ///
 /// # main function of server who handle users connexion
 /// 
@@ -16,7 +16,7 @@ use std::sync::mpsc::{self};
 /// 
 /// - Initialize TCP communication
 /// - Listen all connexion:
-///     - when a new user is connect, min function launch user thread
+///     - when a new user is connect, main function launch user thread
 /// 
 fn main() {
 

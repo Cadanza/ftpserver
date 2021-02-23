@@ -1,6 +1,11 @@
 
 
 #[path = "."]
+/// # FTH Command Handler
+/// 
+/// * author : Saulquin Clément/Aurélie
+/// * version : 1.0
+/// 
 pub mod ftp_handler{
 
     #[path = "userHandler.rs"]
@@ -33,18 +38,52 @@ pub mod ftp_handler{
     use list_handler::list_handler::*;
     use auth_handler::auth_handler::*;
 
+    /// # Structure who contains variables to handle ftp
     pub struct FtpHandler{
+
+        /// - *true* : default value
+        /// - *false* : set to false when QUIT command is recieve
         running : bool,
+
+        /// Stream use to communicatee with user
         server_stream : TcpStream,
+
+        /// Port use to open TcpListener and send data
+        /// - *u16* : port use to send data
+        /// - *None* : If no free port was found to send data
         data_port : Option<u16>,
+
+        /// Stream use to send data
+        /// - *TcpStream* : a free port was found and client connect himself to data listener
+        /// - *None* : no free port was found
         data_stream : Option<TcpStream>,
+
+        /// Good username was sent by user
         good_user : bool,
+
+        /// Good password was sent by user
         good_psw : bool,
     }
         
 
     impl FtpHandler{
 
+        /// Create a new FtpHandler strucutre initialize with user stream
+        /// 
+        /// # Arguments
+        /// 
+        /// - **stream** *TcpStream* user stream
+        /// 
+        /// # Returns
+        /// 
+        /// - FtpHandler struct with :
+        ///     - running = true
+        ///     - server_stream = stream
+        ///     - data_port = None
+        ///     - data_stream = None
+        ///     - good_user = false
+        ///     - good_psw = false
+        /// 
         pub fn new(stream : TcpStream) -> FtpHandler {
             return FtpHandler{running : true, 
                 server_stream : stream,
@@ -55,7 +94,12 @@ pub mod ftp_handler{
             };
         }
 
-        /// # Handle request send by user and call the good function to response at the rquest
+        /// # Handle request send by user and call the good function to response at the request
+        /// 
+        /// # Arguments
+        /// 
+        /// * **data** *Vec<&str>* vector contains command and command arguments
+        /// 
         pub fn request_handler(&mut self, data : Vec<&str>) {
             
 
@@ -115,11 +159,15 @@ pub mod ftp_handler{
             }
         }
 
-
+        /// Return running parameter
+        /// 
+        /// Running parameter is set to false when QUIT command is handle
+        /// 
         pub fn running(&mut self) -> bool{
             return self.running;
         }
 
+        /// Return true if the good username and the good password
         fn session_open(&self) -> bool {
             return self.good_psw && self.good_psw;
         }

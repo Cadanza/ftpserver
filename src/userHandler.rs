@@ -1,5 +1,10 @@
-
+#[doc(inline)]
 #[path = "."]
+/// Module to handle USER ftp command 
+/// 
+/// * author : Saulquin Clément/Aurélie
+/// * version : 1.0
+/// 
 pub mod user_handler{
 
     #[path = "common.rs"]
@@ -16,21 +21,36 @@ pub mod user_handler{
     use code::code::*;
     use messages::messages::*;
 
-
+    /// # Strucutre to handle the USER command
     pub struct UserHandler {
+        /// Username send by client
         pub username : Option<String>,
     }
 
     impl UserHandler{
         
-
+        /// Call when USER command is recieve by ftp handler
+        /// 
+        /// # Arguments
+        /// 
+        /// - **stream** *TcpStream* : stream use to send response to client
+        /// 
+        /// # Returns
+        /// 
+        /// * *true* :
+        ///     - username exist and username is correcte
+        /// 
+        /// * *false* :
+        ///     - username doesn't exist
+        ///     - unsername exist and is not correct
+        ///  
         pub fn execute(&self, stream: &mut TcpStream) -> bool {
             let usm = &self.username;
             let c : Code;
             let m : Message;
             let good_user : bool;
 
-
+            // check if username exist
             match usm {
                 Some(s) => {
                     let name : String = s.to_string();

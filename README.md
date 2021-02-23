@@ -5,6 +5,11 @@ début du projet : 02/02/2021
 
 ## Compilation du projet avec cargo
 
-Le projet à été réaliser avec l'outils cargo, équivalent de maven pour les projet rust.
-Pour compiler le projet : **cargo build**
-Ensuite pour exécuté le projet : **cargo run**
+Lancer le script bash **install.sh** qui permet de compiler le programmer et de généré la doccumentation du programme.
+
+## Lancement du programme
+
+Une fois le script **install.sh** lancer, pour lancer le programme du serveur, il ffaut éxecuter la commande suivante : 
+` cargo r path port` avec:
+- path : le chemin du dossier auquel les clients auront accés
+- port : le port TCP de votre serveur

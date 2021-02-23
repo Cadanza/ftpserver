@@ -1,5 +1,10 @@
 
 #[path ="."]
+/// Module to handle PASS ftp command
+/// 
+/// * author : Saulquin Clément/Aurélie
+/// * version : 1.0
+/// 
 pub mod password_handler{
 
     #[path = "messages.rs"]
@@ -16,13 +21,40 @@ pub mod password_handler{
     use code::code::*;
     use common::common::*;
 
+    /// # Structure to handle the PASS command
+    /// 
+    /// # Parameters:
+    /// 
+    /// * `password` *Option<String>* : password send by client (could be None if no password send)
+    /// * `good_user` *bool* : true if username was correct, false else.
+    ///  
     pub struct PasswordHandler {
+
+        /// password recieve as argument of PASS command
+        /// - *String* if argument was found
+        /// - *None* else
         pub password : Option<String>,
+
+        /// true if username was correct
         pub good_user : bool,
     } 
 
     impl PasswordHandler {
-
+         
+        /// Call when PASS command is recieve by ftp handler
+        /// 
+        /// # Arguments
+        /// 
+        /// * **stream** *TcpStream* : Stream use to send response data to client
+        /// 
+        /// # Returns
+        /// 
+        /// - *true* :
+        ///     - if password is correct
+        /// 
+        /// - *false* : 
+        ///     - if password is not correct or no password was found by handler
+        ///  
         pub fn execute(&self, stream : &mut TcpStream) -> bool{
 
             let c : Code;

@@ -1,5 +1,10 @@
 
 #[path ="."]
+/// # Module to handle PASV ftp command
+/// 
+/// * author : Saulquin Clément/Aurélie
+/// * version : 1.0
+/// 
 pub mod passiv_handler{
 
     #[path = "messages.rs"]
@@ -22,6 +27,21 @@ pub mod passiv_handler{
     } 
 
     impl PassivHandler {
+
+        /// Call when  PASV is recieve by ftp handler
+        /// 
+        /// determine aa free tcp port and open listener to get data tcp stream
+        /// 
+        /// # Arguments
+        /// 
+        /// * `stream` *TcpStream* : stream to send request to user
+        /// 
+        /// # Returns
+        /// 
+        /// * `(Option<u16>, Option<TcpStream>)`
+        ///     - Option<u16> : u16 if free port found, None else
+        ///     - Option<TcpStream>: TcpStream if free port found and if client connect to data TcpListener
+        /// 
         pub fn execute(&self, stream : &mut TcpStream) -> (Option<u16>, Option<TcpStream>){
             let port : Option<u16> = self.port_handler(stream);
             let stream : Option<TcpStream> = self.data_stream_handler(port);
@@ -29,7 +49,18 @@ pub mod passiv_handler{
             return (port, stream);
         }
 
-
+        /// Search a free tcp port and send port to client
+        /// 
+        /// # Arguments
+        /// 
+        /// * `stream` *TcpStream* : stream to send request to user
+        /// 
+        /// # Returns
+        /// 
+        /// * `Option<u16>` : 
+        ///     - u16 if port was found 
+        ///     - None if no free tcp port
+        /// 
         fn port_handler(&self, stream : &mut TcpStream) -> Option<u16> {
             let up1 : u16;
             let up2 : u16;
@@ -71,6 +102,18 @@ pub mod passiv_handler{
            return port;
         }
 
+        /// Listen tcp adress to get data tcp stream
+        /// 
+        /// # Arguments
+        /// 
+        /// - **port** *Option<u16>* port found previosly
+        /// 
+        /// # Returns 
+        /// 
+        /// - *Option<TcpStream>*
+        ///     - *TcpStream* if client connect him to data listener
+        ///     - *None* if port = None or client doesn't connect him to data listener
+        /// 
         fn data_stream_handler(&self, port : Option<u16>) -> Option<TcpStream> {
 
             let mut data_stream : Option<TcpStream> = None;

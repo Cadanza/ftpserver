@@ -1,5 +1,9 @@
 
 /// # User object who communicate with user
+///  
+/// * author : Saulquin Clément/Aurélie
+/// * version : 1.0
+/// 
 #[path = "."]
 pub mod user{
 
@@ -22,18 +26,21 @@ pub mod user{
     
     
     /// # Structure of an user of server
-    /// 
-    /// Contains TcpStream to send request to user
     pub struct User{
+
+        /// Personnal TcpStream to send request to user
         pub server_stream : TcpStream,
+
+        /// Message channel from main thread to user thread to say when server is shutdown
         pub stop : mpsc::Receiver<bool>,
+
         pub path : String,
     }
 
     impl User{
 
-        ///
-        /// call by server tu handle (send and receive) users request in independant thread 
+        
+        /// Call by server tu handle (send and receive) users request in independant thread 
         /// 
         pub fn run(&mut self){    
 
@@ -76,19 +83,18 @@ pub mod user{
             }
         }
 
-        /// 
-        /// # send connection message to user
+        /// Send connection message to user
         /// 
         fn connect(&mut self){
             self.send_request((WELCOME_C, WELCOM_M));
         }
 
-        /// # send requestion to user
+        /// Send requestion to user
         /// 
-        /// ## arguments
-        /// * self
-        /// * code : &str => code of response
-        /// * msg : &str => message send to user
+        /// # Arguments
+        /// 
+        /// - **code** : *&str* : code of response
+        /// - **msg** : *&str* : message send to user
         /// 
         /// **request will be write on log file**
         /// 
