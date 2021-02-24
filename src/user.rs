@@ -16,6 +16,9 @@ pub mod user{
     #[path = "FtpHandler.rs"]
     mod ftp_handler;
 
+    #[path = "common.rs"]
+    mod common;
+
     use std::net::TcpStream;
     use std::io::{BufRead, BufReader, Write};
     use std::sync::mpsc;
@@ -23,6 +26,7 @@ pub mod user{
     use code::code::*;
     use ftp_handler::ftp_handler::FtpHandler;
     use std::time::Duration;
+    use common::common::*;
     
     
     /// # Structure of an user of server
@@ -52,13 +56,13 @@ pub mod user{
             let mut handler : FtpHandler = FtpHandler::new(self.server_stream.try_clone().unwrap());
 
 
-            self.connect();
+            write_line(format!("{} {}", WELCOM_C, WELCOM_M), &mut self.server_stream);
             
             while handler.running(){
 
                 match self.stop.try_recv() {
                     Ok(true) => {
-                        self.send_request((BYE_C, BYE_M));
+                        write_line(format!("{} {}", BYE_C, BYE_M), &mut self.server_stream);
                         break;
                     }
                     _ => {}
@@ -81,35 +85,6 @@ pub mod user{
                 self.server_stream.flush().unwrap();
 
             }
-        }
-
-        /// Send connection message to user
-        /// 
-        fn connect(&mut self){
-            self.send_request((WELCOME_C, WELCOM_M));
-        }
-
-        /// Send requestion to user
-        /// 
-        /// # Arguments
-        /// 
-        /// - **code** : *&str* : code of response
-        /// - **msg** : *&str* : message send to user
-        /// 
-        /// **request will be write on log file**
-        /// 
-        fn send_request(&mut self, ret : (Code, &str)){
-            let req : &str =  &*format!("{} {}\n", ret.0, ret.1);
-
-            let log_req : String = req.into();
-
-            let tcp_req : &[u8] = req.as_bytes();
-
-            log::info!("send => {}", log_req);
-
-            self.server_stream.write(tcp_req).unwrap();
-                
-            
         }
 
         

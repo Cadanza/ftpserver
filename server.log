@@ -1,24 +1,22 @@
-[00:00:00.000] (7fa27cfc5640) INFO   Server Open
-[00:00:08.298] (7fa27cfc5640) INFO   new connection 127.0.0.1:48158
-[00:00:08.298] (7fa27cdc0700) INFO   send => 220 FTP Server (Axolotl FTP)
+[00:00:00.000] (7f14b4938640) INFO   Server Open
+[00:00:12.964] (7f14b4938640) INFO   new connection 127.0.0.1:37596
+[00:00:12.964] (7f14b4733700) INFO   send => 220 FTP Server (Axolotl FTP)
 
-[00:00:12.063] (7fa27cdc0700) INFO   send => 331Please specify the password
-[00:00:12.063] (7fa27cdc0700) INFO   recieve => USER anonymous
+[00:00:17.116] (7f14b4733700) INFO   send => 331Please specify the password
+[00:00:17.116] (7f14b4733700) INFO   recieve => USER anonymous
 
-[00:00:15.662] (7fa27cdc0700) INFO   send => 230 Session open
-[00:00:15.662] (7fa27cdc0700) INFO   recieve => PASS anonymous
+[00:00:21.538] (7f14b4733700) INFO   send => 230 Session open
+[00:00:21.538] (7f14b4733700) INFO   recieve => PASS anonymous
 
-[00:00:15.662] (7fa27cdc0700) INFO   send => 202 Unknow command error
-[00:00:15.662] (7fa27cdc0700) INFO   recieve => SYST
+[00:00:21.538] (7f14b4733700) INFO   send => 202 Unknow command error
+[00:00:21.538] (7f14b4733700) INFO   recieve => SYST
 
-[00:00:53.667] (7fa27cdc0700) INFO   send => 227 Enterring passive mod  (127,0,0,1,4,1)
-[00:00:53.667] (7fa27cdc0700) INFO   recieve => PASV
+[00:00:24.938] (7f14b4733700) INFO   send => 202 Unknow command error
+[00:00:24.938] (7f14b4733700) INFO   recieve => PORT 127,0,0,1,129,181
 
-[00:00:53.667] (7fa27cdc0700) INFO   send => 150 Here commes the directoly listing
-[00:00:53.668] (7fa27cdc0700) INFO   send => 226 Directory send Ok.
-[00:00:53.668] (7fa27cdc0700) INFO   recieve => LIST
+[00:00:24.938] (7f14b4733700) INFO   send => 530 Session no open
+[00:00:24.938] (7f14b4733700) INFO   recieve => LIST
 
-[00:01:18.131] (7fa27cdc0700) INFO   send => 221 Session close, bye bye!
-[00:01:18.131] (7fa27cdc0700) INFO   recieve => QUIT
+[00:01:15.185] (7f14b4733700) INFO   send => 221 Session close, bye bye!
+[00:01:15.185] (7f14b4733700) INFO   recieve => QUIT
 
-[00:01:20.298] (7fa27cfc5640) INFO   server close

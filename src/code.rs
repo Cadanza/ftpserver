@@ -14,7 +14,7 @@ pub mod code{
     /// 
     /// Associated message :
     /// - WELCOM_M
-    pub const WELCOME_C : Code = "220";
+    pub const WELCOM_C : Code = "220";
     
 
     ///# session close code
