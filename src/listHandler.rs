@@ -51,7 +51,7 @@ pub mod list_handler{
         /// 
         pub fn execute(&self, stream : &mut TcpStream){
 
-            if self.session_open {
+            if !self.session_open {
                 write_line(format!("{} {}", SESSION_NO_OPEN_C, SESSION_NO_OPEN_M), stream);
             } else {
                 self.send_data(stream);

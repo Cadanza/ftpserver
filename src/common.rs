@@ -8,7 +8,7 @@
 pub mod common {
     use std::net::TcpStream;
     use std::net::TcpListener;
-    use std::io::{BufRead, BufReader, Write};
+    use std::io::Write;
     
     /// # Send request to user
     /// 

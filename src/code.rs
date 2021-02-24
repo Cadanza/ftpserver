@@ -115,4 +115,12 @@ pub mod code{
     /// Associated message : 
     /// - DATA_SEND_M
     pub const DATA_SEND_C : Code = "226";
+
+    ///# command handle is conclud code
+    /// 
+    /// code value : **200**
+    /// 
+    /// Associated message : 
+    /// - CONCLUD_COMMAND_M
+    pub const CONCLUD_COMMAND_C : Code = "200";
 }

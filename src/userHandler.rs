@@ -72,7 +72,7 @@ pub mod user_handler{
                 }
             }
 
-            write_line(format!("{}{}", c, m), stream);
+            write_line(format!("{} {}", c, m), stream);
 
             return good_user;
         }

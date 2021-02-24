@@ -29,6 +29,10 @@ pub mod ftp_handler{
     #[path  = "authHandler.rs"]
     mod auth_handler;
 
+    #[path = "portHandler.rs"]
+    mod port_handler;
+
+
     use std::net::{TcpStream, Shutdown};
     use user_handler::user_handler::*;
     use unknow_command_handler::unknow_command_handler::*;
@@ -37,6 +41,7 @@ pub mod ftp_handler{
     use passiv_handler::passiv_handler::*;
     use list_handler::list_handler::*;
     use auth_handler::auth_handler::*;
+    use port_handler::port_handler::*;
 
     /// # Structure who contains variables to handle ftp
     pub struct FtpHandler{
@@ -111,6 +116,7 @@ pub mod ftp_handler{
             
 
             println!("{}", command);
+            
 
             match command{
 
@@ -134,9 +140,13 @@ pub mod ftp_handler{
 
                     match &self.data_stream{
                         Some(d) => dt = Some(d.try_clone().unwrap()),
-                        None => dt = None,
+                        None => {
+                            println!("nop");
+                            dt = None
+                        }
                     }
 
+                    
                     ListHandler{data_stream : dt, session_open : self.session_open()}.execute(&mut self.server_stream);
                     
                     match &self.data_stream{
@@ -151,8 +161,17 @@ pub mod ftp_handler{
 
                     self.data_port = passiv_ret.0;
                     self.data_stream = passiv_ret.1;
+
                     
                 },
+
+                "PORT" => {
+                    let activ_ret = PortHandler{data : arg_pop, session_open : self.session_open()}.execute(&mut self.server_stream);
+
+                    self.data_port = activ_ret.0;
+                    self.data_stream = activ_ret.1;
+
+                }
 
                 _ => UnknowCommandHandler{}.execute(&mut self.server_stream),
 

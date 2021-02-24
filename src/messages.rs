@@ -121,11 +121,20 @@ pub mod messages{
     /// - DATA_COME_C
     pub const DATA_COME_M : Message = "Here commes the directoly listing";
     
-    /// # data are sendmessage
+    /// # data are send message
     /// 
     /// message value : **Directory send Ok.**
     /// 
     /// Associated Code :
     /// - DATA_SEND_C
     pub const DATA_SEND_M : Message = "Directory send Ok.";
+
+    ///# command handle is conclud message
+    /// 
+    /// message value : **Command conclud**
+    /// 
+    /// Associated message : 
+    /// - CONCLUD_COMMAND_C
+    pub const CONCLUD_COMMAND_M : Message = "Command conclud";
+
 }
