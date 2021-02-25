@@ -46,10 +46,10 @@ pub mod port_handler{
         /// 
         ///     - *Option<TcpStream> : Data stream open with information pass with command
         /// 
-        pub fn execute(&self, stream : &mut TcpStream) -> (Option<u16>, Option<TcpStream>) {
+        pub fn execute(&self, stream : &mut TcpStream) -> Option<TcpStream> {
             if !self.session_open {
                 write_line(format!("{} {}", SESSION_NO_OPEN_C, SESSION_NO_OPEN_M), stream);
-                return (None, None);
+                return None;
             } else {
                 return self.handler(stream);
             }
@@ -69,10 +69,8 @@ pub mod port_handler{
         /// 
         ///     - *Option<TcpStream> : Data stream open with information pass with command
         /// 
-        fn handler(&self, stream : &mut TcpStream) -> (Option<u16>, Option<TcpStream>) {
+        fn handler(&self, stream : &mut TcpStream) -> Option<TcpStream> {
 
-
-            let port_ret : Option<u16>;
             let stream_ret : Option<TcpStream>;
 
             let c : Code;
@@ -85,8 +83,6 @@ pub mod port_handler{
                     match self.parse_data(s.to_string()) {  // try de get IPV4 address and socket port
 
                         Some(sa) => {   // IPV4 and socket port found
-
-                            port_ret = Some(sa.0);
 
                             match self.open_stream(sa.1, sa.0){ // try to open stream
                                 Some(strm) => { // stream open
@@ -111,7 +107,6 @@ pub mod port_handler{
                             c = UNVA_SYNTAX_ARGS_C;
                             m = UNVA_SYNTAX_ARGS_M;
 
-                            port_ret = None;
                             stream_ret = None;
                         }
                     }
@@ -122,14 +117,13 @@ pub mod port_handler{
                     c = UNVA_SYNTAX_ARGS_C;
                     m = UNVA_SYNTAX_ARGS_M;
 
-                    port_ret = None;
                     stream_ret = None;
                 }
             }
 
             write_line(format!("{} {}", c, m), stream);
 
-            return (port_ret, stream_ret);
+            return stream_ret;
 
         } 
 

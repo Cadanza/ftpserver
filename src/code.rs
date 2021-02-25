@@ -123,4 +123,28 @@ pub mod code{
     /// Associated message : 
     /// - CONCLUD_COMMAND_M
     pub const CONCLUD_COMMAND_C : Code = "200";
+
+    ///# data stream not open code
+    /// 
+    /// code value : **425**
+    /// 
+    /// Associated message : 
+    /// - DATA_STREAM_ERROR_M
+    pub const DATA_STREAM_ERROR_C : Code = "425";
+
+    ///# file service finish code
+    /// 
+    /// code value : **250**
+    /// 
+    /// Associated message : 
+    /// - FILE_SERVICE_FINISH_M
+    pub const FILE_SERVICE_FINISH_C : Code = "250";
+
+    ///# file not accessible code
+    /// 
+    /// code value : **File asked is not accessible**
+    /// 
+    /// Associated message : 
+    /// - FILE_NO_ACCESS_M
+    pub const FILE_NOT_ACCESS_C : Code = "550";
 }

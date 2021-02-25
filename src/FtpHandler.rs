@@ -32,6 +32,9 @@ pub mod ftp_handler{
     #[path = "portHandler.rs"]
     mod port_handler;
 
+    #[path = "cwdHandler.rs"]
+    mod cwd_handler;
+
 
     use std::net::{TcpStream, Shutdown};
     use user_handler::user_handler::*;
@@ -42,6 +45,7 @@ pub mod ftp_handler{
     use list_handler::list_handler::*;
     use auth_handler::auth_handler::*;
     use port_handler::port_handler::*;
+    use cwd_handler::cwd_handler::*;
 
     /// # Structure who contains variables to handle ftp
     pub struct FtpHandler{
@@ -53,11 +57,6 @@ pub mod ftp_handler{
         /// Stream use to communicatee with user
         server_stream : TcpStream,
 
-        /// Port use to open TcpListener and send data
-        /// - *u16* : port use to send data
-        /// - *None* : If no free port was found to send data
-        data_port : Option<u16>,
-
         /// Stream use to send data
         /// - *TcpStream* : a free port was found and client connect himself to data listener
         /// - *None* : no free port was found
@@ -68,6 +67,10 @@ pub mod ftp_handler{
 
         /// Good password was sent by user
         good_psw : bool,
+
+        actual_path : String,
+
+        root_path : String,
     }
         
 
@@ -89,13 +92,14 @@ pub mod ftp_handler{
         ///     - good_user = false
         ///     - good_psw = false
         /// 
-        pub fn new(stream : TcpStream) -> FtpHandler {
+        pub fn new(stream : TcpStream, root : String) -> FtpHandler {
             return FtpHandler{running : true, 
                 server_stream : stream,
-                data_port : None, 
                 data_stream : None,
                 good_user : false,
-                good_psw : false
+                good_psw : false,
+                actual_path : format!("{}", root),
+                root_path : root,
             };
         }
 
@@ -147,7 +151,7 @@ pub mod ftp_handler{
                     }
 
                     
-                    ListHandler{data_stream : dt, session_open : self.session_open()}.execute(&mut self.server_stream);
+                    ListHandler{data_stream : dt, session_open : self.session_open(), path : self.get_path()}.execute(&mut self.server_stream);
                     
                     match &self.data_stream{
                         Some(d) => d.shutdown(Shutdown::Both).expect("shutdown call failed"),
@@ -159,8 +163,7 @@ pub mod ftp_handler{
 
                     let passiv_ret = PassivHandler{session_open : self.session_open()}.execute(&mut self.server_stream);
 
-                    self.data_port = passiv_ret.0;
-                    self.data_stream = passiv_ret.1;
+                    self.data_stream = passiv_ret;
 
                     
                 },
@@ -168,10 +171,18 @@ pub mod ftp_handler{
                 "PORT" => {
                     let activ_ret = PortHandler{data : arg_pop, session_open : self.session_open()}.execute(&mut self.server_stream);
 
-                    self.data_port = activ_ret.0;
-                    self.data_stream = activ_ret.1;
+                    self.data_stream = activ_ret;
 
-                }
+                },
+
+                "CWD" => {
+                    self.actual_path = CwdHandler{
+                        session_open : self.session_open(), 
+                        actual_path : self.get_path(), 
+                        directory : arg_pop
+                    }.execute(&mut self.server_stream);
+
+                },
 
                 _ => UnknowCommandHandler{}.execute(&mut self.server_stream),
 
@@ -189,6 +200,10 @@ pub mod ftp_handler{
         /// Return true if the good username and the good password
         fn session_open(&self) -> bool {
             return self.good_psw && self.good_psw;
+        }
+
+        fn get_path(&self) -> String {
+            return format!("{}", self.actual_path);
         }
         
     }

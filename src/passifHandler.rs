@@ -42,11 +42,11 @@ pub mod passiv_handler{
         ///     - Option<u16> : u16 if free port found, None else
         ///     - Option<TcpStream>: TcpStream if free port found and if client connect to data TcpListener
         /// 
-        pub fn execute(&self, stream : &mut TcpStream) -> (Option<u16>, Option<TcpStream>){
+        pub fn execute(&self, stream : &mut TcpStream) -> Option<TcpStream> {
             let port : Option<u16> = self.port_handler(stream);
             let stream : Option<TcpStream> = self.data_stream_handler(port);
 
-            return (port, stream);
+            return stream;
         }
 
         /// Search a free tcp port and send port to client

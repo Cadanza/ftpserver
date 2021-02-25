@@ -133,8 +133,32 @@ pub mod messages{
     /// 
     /// message value : **Command conclud**
     /// 
-    /// Associated message : 
+    /// Associated code : 
     /// - CONCLUD_COMMAND_C
     pub const CONCLUD_COMMAND_M : Message = "Command conclud";
+
+    ///# data stream not open message
+    /// 
+    /// message value : **No data tcp stream founded**
+    /// 
+    /// Associated code : 
+    /// - DATA_STREAM_ERROR_C
+    pub const DATA_STREAM_ERROR_M : Message = "No data tcp stream fouded";
+
+    ///# file service finish message
+    /// 
+    /// message value : **Service file finish**
+    /// 
+    /// Associated code : 
+    /// - FILE_SERVICE_FINISH_C
+    pub const FILE_SERVICE_FINISH_M : Message = "Service file finish";
+
+    ///# file not accessible message
+    /// 
+    /// message value : **File asked is not accessible**
+    /// 
+    /// Associated code : 
+    /// - FILE_NO_ACCESS_C
+    pub const FILE_NOT_ACCESS_M : Message = "File asked is not accesssible";
 
 }

@@ -27,6 +27,8 @@ fn main() {
 
     //init des variables locales dont les valeurs sont passé par paramètre.
     let file_root : &String = &args[1];
+
+    
     
     let port : &String = &args[2];
 
@@ -34,6 +36,8 @@ fn main() {
 
     // init du fichier de log
     simple_logging::log_to_file("server.log", LevelFilter::Info).unwrap();
+
+    //assert!(env::set_current_dir(file_root).is_ok());
 
     let mut handler = EscapeHandler::new();
     

@@ -39,6 +39,8 @@ pub mod list_handler{
 
         /// if session is not open, do nothing
         pub session_open : bool,
+
+        pub path : String,
     } 
 
     impl ListHandler {
@@ -74,12 +76,22 @@ pub mod list_handler{
 
                     write_line(format!("{} {}", DATA_COME_C, DATA_COME_M), stream);
                     
-                    write_data(self.get_command_res(), &mut s);
+                    
+                    match self.get_command_res() {
+                        Some(data) => {
+                            write_data(data, &mut s);
+                        },
+                        None => {
+
+                        }
+                    }
 
                     write_line(format!("{} {}", DATA_SEND_C, DATA_SEND_M), stream);
 
                 },
-                None => {}
+                None => {
+                    write_line(format!("{} {}", DATA_STREAM_ERROR_C, DATA_STREAM_ERROR_M), stream);
+                }
             }
         }
 
@@ -89,12 +101,18 @@ pub mod list_handler{
         /// 
         /// - *String* result of ls -n convert to string
         /// 
-        fn get_command_res(&self) -> String {
-            let output = Command::new("ls").arg("-n").output().expect("failder to execute process");
-                    
-            let o = String::from_utf8_lossy(&output.stdout);
+        fn get_command_res(&self) -> Option<String> {
+            let output = Command::new("ls").arg(format!("{}",self.path)).arg("-n").output().expect("failder to execute process");
 
-            return format!("{}", o);
+            if output.status.success(){ 
+                let o = String::from_utf8_lossy(&output.stdout);
+
+                return Some(format!("{}", o));
+            } else {
+                return None;
+            }
+                    
+            
         }
 
     }

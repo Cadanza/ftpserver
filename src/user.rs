@@ -53,17 +53,20 @@ pub mod user{
             let mut request = String::new();
             let mut read_buffer = BufReader::new(self.server_stream.try_clone().unwrap());
 
-            let mut handler : FtpHandler = FtpHandler::new(self.server_stream.try_clone().unwrap());
+            let mut handler : FtpHandler = FtpHandler::new(self.server_stream.try_clone().unwrap(), format!("{}",self.path) );
+
+            let mut stop_loop = false;
 
 
             write_line(format!("{} {}", WELCOM_C, WELCOM_M), &mut self.server_stream);
-            
-            while handler.running(){
+            //write_line(String::from("TYPE I"), &mut self.server_stream);
+
+            while handler.running() && !stop_loop {
 
                 match self.stop.try_recv() {
                     Ok(true) => {
-                        write_line(format!("{} {}", BYE_C, BYE_M), &mut self.server_stream);
-                        break;
+                        write_line(format!("{} {}", SERVICE_UNVA_C, SERVICE_UNVA_M), &mut self.server_stream);
+                        stop_loop = true;
                     }
                     _ => {}
                 }
@@ -72,12 +75,14 @@ pub mod user{
                 
                 match read_buffer.read_line(&mut request){
                     Ok(_) => {
+
+                        log::info!("recieve => {}", request);
                         
                         handler.request_handler(
                             request.lines().next().unwrap().split(" ").collect()
                         );
 
-                        log::info!("recieve => {}", request);
+                        
                     },
                     Err(_) => {}
                 }
@@ -85,6 +90,8 @@ pub mod user{
                 self.server_stream.flush().unwrap();
 
             }
+
+            
         }
 
         
