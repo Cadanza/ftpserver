@@ -35,6 +35,9 @@ pub mod ftp_handler{
     #[path = "cwdHandler.rs"]
     mod cwd_handler;
 
+    #[path = "cdupHandler.rs"]
+    mod cdup_handler;
+
 
     use std::net::{TcpStream, Shutdown};
     use user_handler::user_handler::*;
@@ -46,6 +49,7 @@ pub mod ftp_handler{
     use auth_handler::auth_handler::*;
     use port_handler::port_handler::*;
     use cwd_handler::cwd_handler::*;
+    use cdup_handler::cdup_handler::*;
 
     /// # Structure who contains variables to handle ftp
     pub struct FtpHandler{
@@ -119,7 +123,7 @@ pub mod ftp_handler{
             let arg_pop : Option<String> = data_bis.pop();
             
 
-            println!("{}", command);
+            println!("{}", self.actual_path);
             
 
             match command{
@@ -184,6 +188,14 @@ pub mod ftp_handler{
 
                 },
 
+                "CDUP" => {
+                    self.actual_path = CdupHandler{
+                        session_open : self.session_open(),
+                        actual_path : self.get_path(),
+                        root : self.get_root(),
+                    }.execute(&mut self.server_stream);
+                }
+
                 _ => UnknowCommandHandler{}.execute(&mut self.server_stream),
 
             }
@@ -204,6 +216,10 @@ pub mod ftp_handler{
 
         fn get_path(&self) -> String {
             return format!("{}", self.actual_path);
+        }
+
+        fn get_root(&self) -> String {
+            return format!("{}", self.root_path);
         }
         
     }

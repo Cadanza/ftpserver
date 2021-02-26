@@ -158,7 +158,7 @@ pub mod messages{
     /// message value : **File asked is not accessible**
     /// 
     /// Associated code : 
-    /// - FILE_NO_ACCESS_C
+    /// - FILE_NOT_ACCESS_C
     pub const FILE_NOT_ACCESS_M : Message = "File asked is not accesssible";
 
 }

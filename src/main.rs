@@ -37,7 +37,6 @@ fn main() {
     // init du fichier de log
     simple_logging::log_to_file("server.log", LevelFilter::Info).unwrap();
 
-    //assert!(env::set_current_dir(file_root).is_ok());
 
     let mut handler = EscapeHandler::new();
     

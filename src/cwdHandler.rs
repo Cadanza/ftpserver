@@ -20,6 +20,7 @@ pub mod cwd_handler{
     use code::code::*;
     use common::common::*;
     use std::process::Command;
+    use std::iter::FromIterator;
 
     /// # Structure to handle CWD command
     pub struct CwdHandler {
@@ -56,10 +57,12 @@ pub mod cwd_handler{
 
             match &self.directory {
                 Some(dir) => {
-                    if self.check_if_dir_exist(dir.to_string()) {
+                    let mut clean_dir = self.clear_dir_name(dir.to_string());
+
+                    if self.check_if_dir_exist(&mut clean_dir) {
                         c = FILE_SERVICE_FINISH_C;
                         m = FILE_SERVICE_FINISH_M;
-                        ret = format!("{}/{}", self.actual_path, dir);
+                        ret = format!("{}{}/", self.actual_path, clean_dir);
                     } else {
                         c = FILE_NOT_ACCESS_C;
                         m = FILE_NOT_ACCESS_M;
@@ -90,10 +93,10 @@ pub mod cwd_handler{
         ///     - **true** if dir exist and dir is directory
         ///     - **false** else
         /// 
-        fn check_if_dir_exist(&self, dir : String) -> bool {
-                    
-            let good_dir = format!("{}", dir.replace("./", ""));
+        fn check_if_dir_exist(&self, dir : &mut String) -> bool {
 
+            println!("{}", dir);
+                    
             let o = Command::new("ls")
                 .arg("-n")
                 .arg(format!("{}/",self.actual_path))
@@ -104,7 +107,7 @@ pub mod cwd_handler{
                 println!("{}", s);
                 if s.chars().next() == Some('d'){
                     let l : Vec<&str> = s.split(" ").collect();
-                    if good_dir == String::from(*l.last().unwrap()){
+                    if *dir == String::from(*l.last().unwrap()){
                         return true;
                     }
 
@@ -112,6 +115,31 @@ pub mod cwd_handler{
             }
 
             return false;
+        }
+
+        /// remove some characthers at the beginning of dir
+        /// The objectif is to have path without / or ./ at the begenning
+        /// 
+        /// # Arguments
+        /// 
+        /// - **dir** *String* : directory to parse
+        /// 
+        /// # Returns
+        /// 
+        /// *String* : directory without ./ or /
+        /// 
+        fn clear_dir_name(&self, dir : String) -> String {
+            let mut s : Vec<char> = dir.chars().collect();
+
+            if s[0] == '.'{
+                s.remove(0);
+            }
+
+            if s[0] == '/'{
+                s.remove(0);
+            }
+
+            return String::from_iter(s);
         }
     }
 

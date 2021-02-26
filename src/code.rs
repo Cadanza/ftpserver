@@ -145,6 +145,6 @@ pub mod code{
     /// code value : **File asked is not accessible**
     /// 
     /// Associated message : 
-    /// - FILE_NO_ACCESS_M
+    /// - FILE_NOT_ACCESS_M
     pub const FILE_NOT_ACCESS_C : Code = "550";
 }
