@@ -122,8 +122,6 @@ pub mod ftp_handler{
             let command : &str = data[0];
             let arg_pop : Option<String> = data_bis.pop();
             
-
-            println!("{}", self.actual_path);
             
 
             match command{
@@ -183,7 +181,8 @@ pub mod ftp_handler{
                     self.actual_path = CwdHandler{
                         session_open : self.session_open(), 
                         actual_path : self.get_path(), 
-                        directory : arg_pop
+                        directory : arg_pop,
+                        root : self.get_root()
                     }.execute(&mut self.server_stream);
 
                 },

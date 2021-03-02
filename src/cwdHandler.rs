@@ -15,12 +15,16 @@ pub mod cwd_handler{
     #[path = "common.rs"]
     mod common;
 
+    #[path = "cdupHandler.rs"]
+    mod cdup_handler;
+
     use std::net::TcpStream;
     use messages::messages::*;
     use code::code::*;
     use common::common::*;
     use std::process::Command;
     use std::iter::FromIterator;
+    use cdup_handler::cdup_handler::*;
 
     /// # Structure to handle CWD command
     pub struct CwdHandler {
@@ -33,7 +37,9 @@ pub mod cwd_handler{
 
         /// directory where user want to go
         /// It can be *None* if no argument was founded after CWD keyword
-        pub directory : Option<String>
+        pub directory : Option<String>,
+
+        pub root : String
     } 
 
     impl CwdHandler {
@@ -57,6 +63,15 @@ pub mod cwd_handler{
 
             match &self.directory {
                 Some(dir) => {
+
+                    if dir == ".."{
+                        return CdupHandler{
+                            session_open : self.session_open,
+                            actual_path : format!("{}" ,self.actual_path),
+                            root : format!("{}", self.root)
+                        }.execute(stream);
+                    }
+
                     let mut clean_dir = self.clear_dir_name(dir.to_string());
 
                     if self.check_if_dir_exist(&mut clean_dir) {
@@ -95,7 +110,6 @@ pub mod cwd_handler{
         /// 
         fn check_if_dir_exist(&self, dir : &mut String) -> bool {
 
-            println!("{}", dir);
                     
             let o = Command::new("ls")
                 .arg("-n")
@@ -104,7 +118,7 @@ pub mod cwd_handler{
                 .expect("failder to execute process");
 
             for s in String::from_utf8_lossy(&o.stdout).lines() {
-                println!("{}", s);
+
                 if s.chars().next() == Some('d'){
                     let l : Vec<&str> = s.split(" ").collect();
                     if *dir == String::from(*l.last().unwrap()){
