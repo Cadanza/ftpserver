@@ -155,4 +155,12 @@ pub mod code{
     /// Associated message : 
     /// - PATH_CREATED_M
     pub const PATH_CREATED_C : Code = "257";
+
+    ///# path removed code
+    /// 
+    /// code value : **257**
+    /// 
+    /// Associated message : 
+    /// - PATH_REMOVED_M
+    pub const PATH_REMOVED_C : Code = "250";
 }

@@ -113,7 +113,7 @@
 <tr style="height: 21px;">
 <td data-sheets-value="{&quot;1&quot;:2,&quot;2&quot;:&quot;RMD&quot;}" style="width: 44px; height: 21px;">RMD</td>
 <td data-sheets-value="{&quot;1&quot;:2,&quot;2&quot;:&quot;Je peux supprimer un r\u00e9pertoire distant&quot;}" style="width: 545px; height: 21px;">Je peux supprimer un r&eacute;pertoire distant</td>
-<td style="width: 112px; height: 21px;">X</td>
+<td style="width: 112px; height: 21px;">V</td>
 </tr>
 <tr style="height: 21px;">
 <td data-sheets-value="{&quot;1&quot;:2,&quot;2&quot;:&quot;CLOS&quot;}" style="width: 44px; height: 21px;">CLOS</td>

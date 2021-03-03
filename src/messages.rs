@@ -166,6 +166,14 @@ pub mod messages{
     /// message value : **Path correctly created**
     /// 
     /// Associated message : 
-    /// - PATH_CREATED_M
+    /// - PATH_CREATED_C
     pub const PATH_CREATED_M : Message = "Path correctly created";
+
+    ///# path removed code
+    /// 
+    /// message value : **Path correctly removed**
+    /// 
+    /// Associated message : 
+    /// - PATH_REMOVED_C
+    pub const PATH_REMOVED_M : Message = "Path correctly removed";
 }
