@@ -74,7 +74,7 @@ pub mod cdup_handler{
                     m = CONCLUD_COMMAND_M;
 
                 } else {
-
+                    log::info!("File not accessible, try to go up the root");
                     c = FILE_NOT_ACCESS_C;
                     m = FILE_NOT_ACCESS_M;
                     ret = format!("{}",self.root);

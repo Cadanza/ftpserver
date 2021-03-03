@@ -52,6 +52,7 @@ pub mod mkd_handler{
                         match self.relative_to_absolute_path(format!("{}", dir)) {
                             Some(abs_dir) => {
                                 if self.mkdir(abs_dir){
+                                    log::info!("{} was correctly created", dir);
                                     c = PATH_CREATED_C;
                                     m = PATH_CREATED_M;
                                 } else {
@@ -66,6 +67,7 @@ pub mod mkd_handler{
                         }
                     },
                     None => {
+                        log::info!("No argument passed with this FTP Command");
                         c = UNVA_SYNTAX_ARGS_C;
                         m = UNVA_SYNTAX_ARGS_M;
                     }
@@ -110,6 +112,7 @@ pub mod mkd_handler{
             
             
             if absolute_path.len() < cut_root.len() { //if we're under the root
+            log::info!("Try to go above the root folder");
                 return None;
             }
 

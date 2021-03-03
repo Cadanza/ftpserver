@@ -83,14 +83,17 @@ pub mod passiv_handler{
                         m = PASSIF_MODE_M;
     
                         end = format!(" (127,0,0,1,{},{})", up1, up2);
+                        log::info!("Passiv Tcp address is : 127.0.0.1 : {}", p);
                     }
                     None => {
                         c = SERVICE_UNVA_C;
                         m = SERVICE_UNVA_M;
                         end = String::from("");
+                        log::info!("No free Tcp port was found");
                     }
                 }
             } else {
+                log::info!("Ask access to server but user session is not open");
                 c = SESSION_NO_OPEN_C;
                 m = SESSION_NO_OPEN_M;
                 end = String::from("");

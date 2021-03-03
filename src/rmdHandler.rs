@@ -20,6 +20,7 @@ pub mod rmd_handler{
     use code::code::*;
     use common::common::*;
     use std::process::Command;
+    use std::fs::metadata;
 
     /// # Structure to handle MDK command
     pub struct RmdHandler {
@@ -120,7 +121,13 @@ pub mod rmd_handler{
                 }
             }
 
-            return Some(absolute_path.join("/"));
+            let ret_string : String = absolute_path.join("/");
+
+            if metadata(absolute_path.join("/")).unwrap().is_dir(){
+                return Some(ret_string);
+            }
+
+            return None;
 
         }
 

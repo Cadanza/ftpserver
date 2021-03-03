@@ -109,6 +109,7 @@ pub mod list_handler{
 
                 return Some(format!("{}", o));
             } else {
+                log::info!("ls {} -n failed\n{}", self.path, String::from_utf8_lossy(&output.stderr));
                 return None;
             }
                     

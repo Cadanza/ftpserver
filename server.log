@@ -1,47 +1,21 @@
-[00:00:00.000] (7f1c316a2640) INFO   Server Open
-[00:00:07.493] (7f1c316a2640) INFO   new connection 127.0.0.1:58870
-[00:00:07.494] (7f1c3149d700) INFO   send => 220 FTP Server (Axolotl FTP)
-[00:00:09.763] (7f1c3149d700) INFO   recieve => USER anonymous
+[00:00:00.000] (7f735035d640) INFO   Server Open
 
-[00:00:09.763] (7f1c3149d700) INFO   send => 331 Please specify the password
-[00:00:11.961] (7f1c3149d700) INFO   recieve => PASS anonymous
+[00:00:11.063] (7f735035d640) INFO   new connection 127.0.0.1:48156
 
-[00:00:11.961] (7f1c3149d700) INFO   send => 230 Session open
-[00:00:11.961] (7f1c3149d700) INFO   recieve => SYST
+[00:00:11.063] (7f734bfff700) INFO   send => 220 FTP Server (Axolotl FTP)
+[00:00:17.575] (7f734bfff700) INFO   recieve => USER anonymous
+[00:00:17.575] (7f734bfff700) INFO   send => 331 Please specify the password
+[00:00:17.575] (7f734bfff700) INFO   USER command handle finish
 
-[00:00:11.961] (7f1c3149d700) INFO   send => 202 Unknow command error
-[00:00:13.863] (7f1c3149d700) INFO   recieve => PORT 127,0,0,1,169,201
+[00:00:21.249] (7f734bfff700) INFO   recieve => PASS anonymous
+[00:00:21.249] (7f734bfff700) INFO   Password is correct
+[00:00:21.249] (7f734bfff700) INFO   send => 230 Session open
+[00:00:21.249] (7f734bfff700) INFO   PASS command handle finish
 
-[00:00:13.863] (7f1c3149d700) INFO   Tcp data stream open at 127.0.0.1:43465 address
-[00:00:13.863] (7f1c3149d700) INFO   send => 200 Command conclud
-[00:00:13.863] (7f1c3149d700) INFO   recieve => LIST
+[00:00:21.249] (7f734bfff700) INFO   recieve => SYST
+[00:00:21.249] (7f734bfff700) INFO   SYST is not implemented on Axolotl FTP Server
+[00:00:21.249] (7f734bfff700) INFO   send => 202 Unknow command error
+[00:00:21.249] (7f734bfff700) INFO   SYST command handle finish
 
-[00:00:13.863] (7f1c3149d700) INFO   send => 150 Here commes the directoly listing
-[00:00:13.864] (7f1c3149d700) INFO   send => 226 Directory send Ok.
-[00:00:20.208] (7f1c3149d700) INFO   recieve => RMD truc
-
-[00:00:20.209] (7f1c3149d700) INFO   send => 257 Path correctly created
-[00:00:23.179] (7f1c3149d700) INFO   recieve => PORT 127,0,0,1,208,61
-
-[00:00:23.179] (7f1c3149d700) INFO   Tcp data stream open at 127.0.0.1:53309 address
-[00:00:23.179] (7f1c3149d700) INFO   send => 200 Command conclud
-[00:00:23.179] (7f1c3149d700) INFO   recieve => LIST
-
-[00:00:23.179] (7f1c3149d700) INFO   send => 150 Here commes the directoly listing
-[00:00:23.181] (7f1c3149d700) INFO   send => 226 Directory send Ok.
-[00:00:56.685] (7f1c3149d700) INFO   recieve => RMD truc
-
-[00:00:56.686] (7f1c3149d700) INFO   send => 257 Path correctly created
-[00:01:24.851] (7f1c3149d700) INFO   recieve => RMD ../rust
-
-[00:01:24.851] (7f1c3149d700) INFO   send => 550 File asked is not accesssible
-[00:01:32.980] (7f1c3149d700) INFO   recieve => RMD ../truc
-
-[00:01:32.980] (7f1c3149d700) INFO   send => 550 File asked is not accesssible
-[00:01:39.549] (7f1c3149d700) INFO   recieve => RMD ./truc
-
-[00:01:39.550] (7f1c3149d700) INFO   send => 257 Path correctly created
-[00:04:40.602] (7f1c3149d700) INFO   recieve => QUIT
-
-[00:04:40.602] (7f1c3149d700) INFO   send => 221 Session close, bye bye!
-[00:04:42.458] (7f1c316a2640) INFO   server close
+[00:03:08.142] (7f734bfff700) INFO   send => 421 Service is not available
+[00:03:09.166] (7f735035d640) INFO   server close

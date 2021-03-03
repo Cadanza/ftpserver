@@ -130,7 +130,7 @@ pub mod ftp_handler{
             let command : &str = data[0];
             let arg_pop : Option<String> = data_bis.pop();
             
-            println!("{}", self.actual_path);
+            
 
             match command{
 
@@ -221,9 +221,13 @@ pub mod ftp_handler{
                     }.execute(&mut self.server_stream);
                 }
 
-                _ => UnknowCommandHandler{}.execute(&mut self.server_stream),
+                _ => {
+                    log::info!("{} is not implemented on Axolotl FTP Server", command);
+                    UnknowCommandHandler{}.execute(&mut self.server_stream);
+                }
 
             }
+            log::info!("{} command handle finish\n", command);
         }
 
         /// Return running parameter

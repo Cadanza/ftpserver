@@ -94,6 +94,9 @@ pub mod port_handler{
                                     stream_ret = Some(strm);
                                 },
                                 None => {   // open socket failed
+
+                                    log::info!("Tcp data stream open failed");
+
                                     stream_ret = None;
                                     
                                     c = SERVICE_UNVA_C;
@@ -103,7 +106,7 @@ pub mod port_handler{
                             
                         },
                         None => {   // Get IPV4 or oprt has failed
-                            
+                            log::info!("Bad argument format, Tcp adress extraction has failed");
                             c = UNVA_SYNTAX_ARGS_C;
                             m = UNVA_SYNTAX_ARGS_M;
 
@@ -113,7 +116,7 @@ pub mod port_handler{
 
                 },
                 None =>{    // No arguments was founded on command
-                    
+                    log::info!("No argument given with this command");
                     c = UNVA_SYNTAX_ARGS_C;
                     m = UNVA_SYNTAX_ARGS_M;
 

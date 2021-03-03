@@ -60,7 +60,7 @@ fn main() {
     // on le met en mode non bloquant pour pouvoir sortir de la boucle en cas de SIGINT
     listener.set_nonblocking(true).unwrap();
 
-    log::info!("Server Open");
+    log::info!("Server Open\n");
 
 
     println!("Welcome to Axolotl FTP Server");
@@ -75,7 +75,7 @@ fn main() {
                 
                 let (s, r): (mpsc::Sender<bool>, mpsc::Receiver<bool>) = mpsc::channel();
 
-                log::info!("new connection {}",stream.peer_addr().unwrap() );   // on inscrit le connection dans les log
+                log::info!("new connection {}\n",stream.peer_addr().unwrap() );   // on inscrit le connection dans les log
 
                 let mut u = User{ server_stream : stream, stop : r, path : file_root.to_string()};  // création de l'utilisateur
 

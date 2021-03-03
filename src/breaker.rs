@@ -35,6 +35,7 @@ pub mod breaker{
     
             ctrlc::set_handler(move || {
                 r.store(true, Ordering::SeqCst);
+                log::info!("recieve SIG INT signal");
             }).expect("Ertror setting Ctrl-C handler");
     
             return EscapeHandler{running};

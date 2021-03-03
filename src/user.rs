@@ -59,6 +59,7 @@ pub mod user{
 
 
             write_line(format!("{} {}", WELCOM_C, WELCOM_M), &mut self.server_stream);
+            log::info!("entry message correctly send\n");
             //write_line(String::from("TYPE I"), &mut self.server_stream);
 
             while handler.running() && !stop_loop {
@@ -76,7 +77,7 @@ pub mod user{
                 match read_buffer.read_line(&mut request){
                     Ok(_) => {
 
-                        log::info!("recieve => {}", request);
+                        log::info!("recieve => {}", request.trim());
                         
                         handler.request_handler(
                             request.lines().next().unwrap().split(" ").collect()

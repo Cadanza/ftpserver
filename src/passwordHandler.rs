@@ -63,6 +63,7 @@ pub mod password_handler{
             let good_psw : bool;
 
             if !self.good_user{
+                log::info!("No or false user name was recieved");
                 c = SESSION_NO_OPEN_C;
                 m = SESSION_NO_OPEN_M;
                 good_psw = false;
@@ -72,16 +73,19 @@ pub mod password_handler{
                     Some(p) => {
     
                         if p == "anonymous" {
+                            log::info!("Password is correct");
                             c = SESSION_OPEN_C;
                             m = SESSION_OPEN_M;
                             good_psw = true;
                         } else {
+                            log::info!("Password is not correct");
                             c = SESSION_NO_OPEN_C;
                             m = ANO_ONLY_M;
                             good_psw = false;
                         }
                     },
                     &None => {
+                        log::info!("No password found with ftp command");
                         c = UNVA_SYNTAX_ARGS_C;
                         m = UNVA_SYNTAX_ARGS_M;
                         good_psw = false;

@@ -75,15 +75,18 @@ pub mod cwd_handler{
                     let mut clean_dir = self.clear_dir_name(dir.to_string());
 
                     if self.check_if_dir_exist(&mut clean_dir) {
+                        log::info!("move path user to {}", clean_dir);
                         c = FILE_SERVICE_FINISH_C;
                         m = FILE_SERVICE_FINISH_M;
                         ret = format!("{}{}/", self.actual_path, clean_dir);
                     } else {
+                        log::info!("{} doesn't exist", clean_dir);
                         c = FILE_NOT_ACCESS_C;
                         m = FILE_NOT_ACCESS_M;
                         ret = format!("{}", self.actual_path);
                     }
                 } None => {
+                    log::info!("No arguments was found with ftp command");
                     c = UNVA_SYNTAX_ARGS_C;
                     m = UNVA_SYNTAX_ARGS_M;
                     ret = format!("{}", self.actual_path);
@@ -127,6 +130,8 @@ pub mod cwd_handler{
 
                 }
             }
+
+            log::info!("the directory {} doesn't exist", dir);
 
             return false;
         }
