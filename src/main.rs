@@ -1,7 +1,6 @@
 mod user;
 mod breaker;
 
-
 use log::LevelFilter;
 use std::{env, assert, thread};
 use std::net::TcpListener;
@@ -23,13 +22,25 @@ fn main() {
     //récupération des arguments passé en ligne de commande
     let args : Vec<String> = env::args().collect();
 
+
+    // petit endoirt pour tester plus rapidement mes commandes
+    if args.len() == 2 {
+        return;
+    }
+
     assert!(args.len()>=3);
 
     //init des variables locales dont les valeurs sont passé par paramètre.
-    let file_root : &String = &args[1];
+    
+    
 
-    
-    
+    let mut cut_root : Vec<&str> = args[1].split("/").collect();
+
+    if cut_root.last() != Some(&"") {
+        cut_root.push("");
+    }
+    let file_root : &String = &cut_root.join("/");
+
     let port : &String = &args[2];
 
     let addr : &str = &*format!("127.0.0.1:{}", port);  // adresse du serveur

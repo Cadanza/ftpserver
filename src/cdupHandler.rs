@@ -62,15 +62,13 @@ pub mod cdup_handler{
 
                 let mut splited_root_path : Vec<&str> = self.root.split("/").collect();
 
-                println!("{:?}", splited_actual_path);
-
                 splited_actual_path.pop(); //remove ""
                 splited_root_path.pop(); //remove ""
 
                 splited_actual_path.pop(); // remove directory
 
                 if splited_actual_path.len() >= splited_root_path.len(){
-                    println!("{:?}", splited_actual_path);
+                    
                     ret = format!("{}/", splited_actual_path.join("/"));
                     c = CONCLUD_COMMAND_C;
                     m = CONCLUD_COMMAND_M;

@@ -38,6 +38,9 @@ pub mod ftp_handler{
     #[path = "cdupHandler.rs"]
     mod cdup_handler;
 
+    #[path = "mkdHandler.rs"]
+    mod mkd_handler;
+
 
     use std::net::{TcpStream, Shutdown};
     use user_handler::user_handler::*;
@@ -50,6 +53,7 @@ pub mod ftp_handler{
     use port_handler::port_handler::*;
     use cwd_handler::cwd_handler::*;
     use cdup_handler::cdup_handler::*;
+    use mkd_handler::mkd_handler::*;
 
     /// # Structure who contains variables to handle ftp
     pub struct FtpHandler{
@@ -122,7 +126,7 @@ pub mod ftp_handler{
             let command : &str = data[0];
             let arg_pop : Option<String> = data_bis.pop();
             
-            
+            println!("{}", self.actual_path);
 
             match command{
 
@@ -192,6 +196,15 @@ pub mod ftp_handler{
                         session_open : self.session_open(),
                         actual_path : self.get_path(),
                         root : self.get_root(),
+                    }.execute(&mut self.server_stream);
+                }
+
+                "MKD" => {
+                    MkdHandler{
+                        session_open : self.session_open(),
+                        path : arg_pop,
+                        actual_path : self.get_path(),
+                        root : self.get_root()
                     }.execute(&mut self.server_stream);
                 }
 

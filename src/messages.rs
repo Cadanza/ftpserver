@@ -161,4 +161,11 @@ pub mod messages{
     /// - FILE_NOT_ACCESS_C
     pub const FILE_NOT_ACCESS_M : Message = "File asked is not accesssible";
 
+    ///# path created code
+    /// 
+    /// message value : **Path correctly created**
+    /// 
+    /// Associated message : 
+    /// - PATH_CREATED_M
+    pub const PATH_CREATED_M : Message = "Path correctly created";
 }

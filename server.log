@@ -1,46 +1,22 @@
-[00:00:00.000] (7f3a20ab5640) INFO   Server Open
-[00:00:01.956] (7f3a20ab5640) INFO   new connection 127.0.0.1:47912
-[00:00:01.956] (7f3a208b0700) INFO   send => 220 FTP Server (Axolotl FTP)
-[00:00:04.491] (7f3a208b0700) INFO   recieve => USER anonymous
+[00:00:00.000] (7f317a712640) INFO   Server Open
+[00:00:04.136] (7f317a712640) INFO   new connection 127.0.0.1:58264
+[00:00:04.136] (7f317a50d700) INFO   send => 220 FTP Server (Axolotl FTP)
+[00:00:06.347] (7f317a50d700) INFO   recieve => USER anonymous
 
-[00:00:04.491] (7f3a208b0700) INFO   send => 331 Please specify the password
-[00:00:09.556] (7f3a208b0700) INFO   recieve => PASS anonymous
+[00:00:06.347] (7f317a50d700) INFO   send => 331 Please specify the password
+[00:00:10.544] (7f317a50d700) INFO   recieve => PASS anonymous
 
-[00:00:09.556] (7f3a208b0700) INFO   send => 230 Session open
-[00:00:09.556] (7f3a208b0700) INFO   recieve => SYST
+[00:00:10.544] (7f317a50d700) INFO   send => 230 Session open
+[00:00:10.544] (7f317a50d700) INFO   recieve => SYST
 
-[00:00:09.556] (7f3a208b0700) INFO   send => 202 Unknow command error
-[00:00:13.451] (7f3a208b0700) INFO   recieve => PORT 127,0,0,1,157,75
+[00:00:10.544] (7f317a50d700) INFO   send => 202 Unknow command error
+[00:00:11.425] (7f317a50d700) INFO   recieve => PORT 127,0,0,1,163,49
 
-[00:00:13.451] (7f3a208b0700) INFO   Tcp data stream open at 127.0.0.1:40267 address
-[00:00:13.451] (7f3a208b0700) INFO   send => 200 Command conclud
-[00:00:13.452] (7f3a208b0700) INFO   recieve => LIST
+[00:00:11.425] (7f317a50d700) INFO   Tcp data stream open at 127.0.0.1:41777 address
+[00:00:11.425] (7f317a50d700) INFO   send => 200 Command conclud
+[00:00:11.425] (7f317a50d700) INFO   recieve => LIST
 
-[00:00:13.452] (7f3a208b0700) INFO   send => 150 Here commes the directoly listing
-[00:00:13.453] (7f3a208b0700) INFO   send => 226 Directory send Ok.
-[00:00:18.159] (7f3a208b0700) INFO   recieve => CWD un-dossier
-
-[00:00:18.160] (7f3a208b0700) INFO   send => 250 Service file finish
-[00:00:20.339] (7f3a208b0700) INFO   recieve => PORT 127,0,0,1,160,153
-
-[00:00:20.339] (7f3a208b0700) INFO   Tcp data stream open at 127.0.0.1:41113 address
-[00:00:20.339] (7f3a208b0700) INFO   send => 200 Command conclud
-[00:00:20.339] (7f3a208b0700) INFO   recieve => LIST
-
-[00:00:20.339] (7f3a208b0700) INFO   send => 150 Here commes the directoly listing
-[00:00:20.341] (7f3a208b0700) INFO   send => 226 Directory send Ok.
-[00:00:23.192] (7f3a208b0700) INFO   recieve => CWD ..
-
-[00:00:23.192] (7f3a208b0700) INFO   send => 200 Command conclud
-[00:00:25.950] (7f3a208b0700) INFO   recieve => PORT 127,0,0,1,137,211
-
-[00:00:25.950] (7f3a208b0700) INFO   Tcp data stream open at 127.0.0.1:35283 address
-[00:00:25.950] (7f3a208b0700) INFO   send => 200 Command conclud
-[00:00:25.950] (7f3a208b0700) INFO   recieve => LIST
-
-[00:00:25.950] (7f3a208b0700) INFO   send => 150 Here commes the directoly listing
-[00:00:25.952] (7f3a208b0700) INFO   send => 226 Directory send Ok.
-[00:00:34.958] (7f3a208b0700) INFO   recieve => QUIT
-
-[00:00:34.958] (7f3a208b0700) INFO   send => 221 Session close, bye bye!
-[00:00:37.172] (7f3a20ab5640) INFO   server close
+[00:00:11.426] (7f317a50d700) INFO   send => 150 Here commes the directoly listing
+[00:00:11.427] (7f317a50d700) INFO   send => 226 Directory send Ok.
+[00:10:21.722] (7f317a50d700) INFO   send => 421 Service is not available
+[00:10:22.746] (7f317a712640) INFO   server close

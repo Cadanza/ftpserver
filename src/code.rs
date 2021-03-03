@@ -142,9 +142,17 @@ pub mod code{
 
     ///# file not accessible code
     /// 
-    /// code value : **File asked is not accessible**
+    /// code value : **550**
     /// 
     /// Associated message : 
     /// - FILE_NOT_ACCESS_M
     pub const FILE_NOT_ACCESS_C : Code = "550";
+
+    ///# path created code
+    /// 
+    /// code value : **257**
+    /// 
+    /// Associated message : 
+    /// - PATH_CREATED_M
+    pub const PATH_CREATED_C : Code = "257";
 }
