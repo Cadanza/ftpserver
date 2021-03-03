@@ -103,7 +103,7 @@
 <tr style="height: 21px;">
 <td data-sheets-value="{&quot;1&quot;:2,&quot;2&quot;:&quot;MKD&quot;}" style="width: 44px; height: 21px;">MKD</td>
 <td data-sheets-value="{&quot;1&quot;:2,&quot;2&quot;:&quot;Je peux cr\u00e9er un r\u00e9pertoire distant&quot;}" style="width: 545px; height: 21px;">Je peux cr&eacute;er un r&eacute;pertoire distant</td>
-<td style="width: 112px; height: 21px;">X</td>
+<td style="width: 112px; height: 21px;">V</td>
 </tr>
 <tr style="height: 21px;">
 <td data-sheets-value="{&quot;1&quot;:2,&quot;2&quot;:&quot;REND&quot;}" style="width: 44px; height: 21px;">REND</td>
