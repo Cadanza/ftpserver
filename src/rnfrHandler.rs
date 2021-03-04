@@ -1,10 +1,10 @@
 #[path ="."]
-/// Module to handle MKD ftp command
+/// Module to handle RNFR ftp command
 /// 
 /// * author : Saulquin Clément/Aurélie
 /// * version : 1.0
 /// 
-pub mod mkd_handler{
+pub mod rnfr_handler{
 
     #[path = "messages.rs"]
     mod messages;
@@ -19,63 +19,64 @@ pub mod mkd_handler{
     use messages::messages::*;
     use code::code::*;
     use common::common::*;
-    use std::process::Command;
+    use std::fs::metadata;
 
     /// # Structure to handle MDK command
-    pub struct MkdHandler {
+    pub struct RnfrHandler {
         pub session_open : bool,
         pub path : Option<String>,
         pub actual_path : String,
         pub root : String
     } 
 
-    impl MkdHandler {
+    impl RnfrHandler {
 
-        /// Call when MKD command is recieve by ftp handler
+        /// Call when RNFR command is recieve by ftp handler
         /// 
         /// # Arguments
         /// 
         /// - *stream** *TcpStream* stream use to send response to user
         /// 
-        pub fn execute(&self, stream : &mut TcpStream){
+        pub fn execute(&self, stream : &mut TcpStream) -> Option<String> {
 
             let c : Code;
             let m : Message;
 
+            let ret : Option<String>;
+
             if !self.session_open {
                 c = SESSION_NO_OPEN_C;
                 m = SESSION_NO_OPEN_M;
+                ret = None;
             } else {
 
                 match &self.path {
                     Some(dir) => {
                         match self.relative_to_absolute_path(format!("{}", dir)) {
-                            Some(abs_dir) => {
-                                if self.mkdir(abs_dir){
-                                    log::info!("{} was correctly created", dir);
-                                    c = PATH_CREATED_C;
-                                    m = PATH_CREATED_M;
-                                } else {
-                                    c = FILE_NOT_ACCESS_C;
-                                    m = FILE_NOT_ACCESS_M;
-                                }
+                            Some(p) => {
+                                c = FILE_SERV_WAIT_C;
+                                m = FILE_SERV_WAIT_M;
+                                ret = Some(format!("{}", p));
                             },
                             None => {
                                 c = FILE_NOT_ACCESS_C;
                                 m = FILE_NOT_ACCESS_M;
+                                ret = None;
                             }
                         }
                     },
                     None => {
-                        log::info!("No argument passed with this FTP Command");
                         c = UNVA_SYNTAX_ARGS_C;
                         m = UNVA_SYNTAX_ARGS_M;
+                        ret = None;
                     }
                 }
 
             }
 
             write_line(format!("{} {}", c, m), stream);
+
+            return ret;
         }
 
         /// Transform a relative path to an absolute path
@@ -91,6 +92,7 @@ pub mod mkd_handler{
         ///     - *None* : absolute path was above the root
         /// 
         fn relative_to_absolute_path(&self, dir : String) -> Option<String>{
+            
             let mut cut_dir : Vec<&str> = dir.split("/").collect();
             let mut absolute_path : Vec<&str> = self.actual_path.split("/").collect();
             let mut cut_root : Vec<&str> = self.root.split("/").collect();
@@ -112,7 +114,6 @@ pub mod mkd_handler{
             
             
             if absolute_path.len() < cut_root.len() { //if we're under the root
-                log::info!("Try to go above the root folder");
                 return None;
             }
 
@@ -123,25 +124,17 @@ pub mod mkd_handler{
                 }
             }
 
-            return Some(absolute_path.join("/"));
+            let ret_string : String = absolute_path.join("/");
 
-        }
+            match metadata(absolute_path.join("/")){
+                Ok(_) => {
+                    return Some(ret_string);
+                },
+                Err(_) => {
+                    return None;
+                }
+            }
 
-        /// call mkdir unix command
-        /// 
-        /// # Arguments
-        /// 
-        /// - **dir** *String* : absolute directory path
-        /// 
-        /// # Returns
-        /// 
-        /// - *bool* : 
-        ///     - *true* if command execute with success
-        ///     - *false* else 
-        fn mkdir(&self, dir : String) -> bool {
-            let output = Command::new("mkdir").arg(dir).output().expect("failder to execute process");
-
-            return  output.status.success();
         }
     
     }

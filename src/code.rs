@@ -156,11 +156,20 @@ pub mod code{
     /// - PATH_CREATED_M
     pub const PATH_CREATED_C : Code = "257";
 
-    ///# path removed code
+
+    ///# file service waiting more information code
     /// 
-    /// code value : **257**
+    /// code value : **350**
     /// 
     /// Associated message : 
-    /// - PATH_REMOVED_M
-    pub const PATH_REMOVED_C : Code = "250";
+    /// - FILE_SERV_WAIT_M
+    pub const FILE_SERV_WAIT_C : Code = "350";
+
+    ///# unvalaible file name code
+    /// 
+    /// code value : **553**
+    /// 
+    /// Associated message : 
+    /// - UNVA_FILE_NAME_M
+    pub const UNVA_FILE_NAME_C : Code = "553";
 }

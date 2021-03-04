@@ -161,7 +161,7 @@ pub mod messages{
     /// - FILE_NOT_ACCESS_C
     pub const FILE_NOT_ACCESS_M : Message = "File asked is not accesssible";
 
-    ///# path created code
+    ///# path created message
     /// 
     /// message value : **Path correctly created**
     /// 
@@ -169,11 +169,21 @@ pub mod messages{
     /// - PATH_CREATED_C
     pub const PATH_CREATED_M : Message = "Path correctly created";
 
-    ///# path removed code
+
+    ///# file service waiting more information message
     /// 
-    /// message value : **Path correctly removed**
+    /// code value : **File service is waiting for more information**
     /// 
     /// Associated message : 
-    /// - PATH_REMOVED_C
-    pub const PATH_REMOVED_M : Message = "Path correctly removed";
+    /// - FILE_SERV_WAIT_C
+    pub const FILE_SERV_WAIT_M : Message = "File service is waiting for more information";
+
+    ///# unvalaible file name message
+    /// 
+    /// code value : **Unvalaible file name**
+    /// 
+    /// Associated message : 
+    /// - UNVA_FILE_NAME_C
+    pub const UNVA_FILE_NAME_M : Message = "Unvalaible file name";
+
 }

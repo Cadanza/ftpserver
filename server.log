@@ -1,21 +1,35 @@
-[00:00:00.000] (7f735035d640) INFO   Server Open
+[00:00:00.000] (7fe756e2e640) INFO   Server Open
 
-[00:00:11.063] (7f735035d640) INFO   new connection 127.0.0.1:48156
+[00:00:04.810] (7fe756e2e640) INFO   new connection 127.0.0.1:33750
 
-[00:00:11.063] (7f734bfff700) INFO   send => 220 FTP Server (Axolotl FTP)
-[00:00:17.575] (7f734bfff700) INFO   recieve => USER anonymous
-[00:00:17.575] (7f734bfff700) INFO   send => 331 Please specify the password
-[00:00:17.575] (7f734bfff700) INFO   USER command handle finish
+[00:00:04.810] (7fe756c29700) INFO   send => 220 FTP Server (Axolotl FTP)
+[00:00:04.810] (7fe756c29700) INFO   entry message correctly send
 
-[00:00:21.249] (7f734bfff700) INFO   recieve => PASS anonymous
-[00:00:21.249] (7f734bfff700) INFO   Password is correct
-[00:00:21.249] (7f734bfff700) INFO   send => 230 Session open
-[00:00:21.249] (7f734bfff700) INFO   PASS command handle finish
+[00:00:07.110] (7fe756c29700) INFO   recieve => USER anonymous
+[00:00:07.110] (7fe756c29700) INFO   send => 331 Please specify the password
+[00:00:07.110] (7fe756c29700) INFO   USER command handle finish
 
-[00:00:21.249] (7f734bfff700) INFO   recieve => SYST
-[00:00:21.249] (7f734bfff700) INFO   SYST is not implemented on Axolotl FTP Server
-[00:00:21.249] (7f734bfff700) INFO   send => 202 Unknow command error
-[00:00:21.249] (7f734bfff700) INFO   SYST command handle finish
+[00:00:09.376] (7fe756c29700) INFO   recieve => PASS anonymous
+[00:00:09.376] (7fe756c29700) INFO   Password is correct
+[00:00:09.376] (7fe756c29700) INFO   send => 230 Session open
+[00:00:09.376] (7fe756c29700) INFO   PASS command handle finish
 
-[00:03:08.142] (7f734bfff700) INFO   send => 421 Service is not available
-[00:03:09.166] (7f735035d640) INFO   server close
+[00:00:09.376] (7fe756c29700) INFO   recieve => SYST
+[00:00:09.376] (7fe756c29700) INFO   SYST is not implemented on Axolotl FTP Server
+[00:00:09.376] (7fe756c29700) INFO   send => 202 Unknow command error
+[00:00:09.376] (7fe756c29700) INFO   SYST command handle finish
+
+[00:00:26.312] (7fe756c29700) INFO   recieve => RNFR un-dossier
+[00:00:26.313] (7fe756c29700) INFO   send => 350 File service is waiting for more information
+[00:00:26.313] (7fe756c29700) INFO   RNFR command handle finish
+
+[00:00:26.313] (7fe756c29700) INFO   recieve => RNTO dossier
+[00:00:26.313] (7fe756c29700) INFO   send => 250 Service file finish
+[00:00:26.313] (7fe756c29700) INFO   RNTO command handle finish
+
+[00:00:31.188] (7fe756c29700) INFO   recieve => QUIT
+[00:00:31.188] (7fe756c29700) INFO   send => 221 Session close, bye bye!
+[00:00:31.188] (7fe756c29700) INFO   QUIT command handle finish
+
+[00:00:33.012] (7fe756e2a700) INFO   recieve SIG INT signal
+[00:00:33.012] (7fe756e2e640) INFO   server close

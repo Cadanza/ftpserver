@@ -53,8 +53,8 @@ pub mod rmd_handler{
                         match self.relative_to_absolute_path(format!("{}", dir)) {
                             Some(abs_dir) => {
                                 if self.rmrf(abs_dir){
-                                    c = PATH_REMOVED_C;
-                                    m = PATH_REMOVED_M;
+                                    c = FILE_SERVICE_FINISH_C;
+                                    m = FILE_SERVICE_FINISH_M;
                                 } else {
                                     c = FILE_NOT_ACCESS_C;
                                     m = FILE_NOT_ACCESS_M;

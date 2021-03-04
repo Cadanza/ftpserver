@@ -44,6 +44,12 @@ pub mod ftp_handler{
     #[path = "rmdHandler.rs"]
     mod rmd_handler;
 
+    #[path = "rnfrHandler.rs"]
+    mod rnfr_handler;
+
+    #[path = "rntoHandler.rs"]
+    mod rnto_handler;
+
 
     use std::net::{TcpStream, Shutdown};
     use user_handler::user_handler::*;
@@ -58,6 +64,8 @@ pub mod ftp_handler{
     use cdup_handler::cdup_handler::*;
     use mkd_handler::mkd_handler::*;
     use rmd_handler::rmd_handler::*;
+    use rnfr_handler::rnfr_handler::*;
+    use rnto_handler::rnto_handler::*;
 
     /// # Structure who contains variables to handle ftp
     pub struct FtpHandler{
@@ -83,6 +91,8 @@ pub mod ftp_handler{
         actual_path : String,
 
         root_path : String,
+
+        file_to_rename : Option<String>
     }
         
 
@@ -112,6 +122,7 @@ pub mod ftp_handler{
                 good_psw : false,
                 actual_path : format!("{}", root),
                 root_path : root,
+                file_to_rename : None
             };
         }
 
@@ -130,6 +141,7 @@ pub mod ftp_handler{
             let command : &str = data[0];
             let arg_pop : Option<String> = data_bis.pop();
             
+            println!("{:?}", self.file_to_rename);
             
 
             match command{
@@ -221,6 +233,25 @@ pub mod ftp_handler{
                     }.execute(&mut self.server_stream);
                 }
 
+                "RNFR" => {
+
+                    self.file_to_rename = RnfrHandler{
+                        session_open : self.session_open(),
+                        path : arg_pop,
+                        actual_path : self.get_path(),
+                        root : self.get_root()
+                    }.execute(&mut self.server_stream);
+
+                }
+
+                "RNTO" => {
+                    RntoHandler{
+                        session_open : self.session_open(),
+                        path : self.get_file_to_rename(),
+                        name : arg_pop,
+                    }.execute(&mut self.server_stream);
+                }
+
                 _ => {
                     log::info!("{} is not implemented on Axolotl FTP Server", command);
                     UnknowCommandHandler{}.execute(&mut self.server_stream);
@@ -243,12 +274,25 @@ pub mod ftp_handler{
             return self.good_psw && self.good_psw;
         }
 
+        /// Return self.actual_path copy
         fn get_path(&self) -> String {
             return format!("{}", self.actual_path);
         }
 
+        /// Return self.root_path copy
         fn get_root(&self) -> String {
             return format!("{}", self.root_path);
+        }
+
+        /// Return self.file_to_rename copy
+        fn get_file_to_rename(&self) -> Option<String> {
+            let ret : Option<String>;
+
+            match &self.file_to_rename {
+                Some(f) => ret = Some(format!("{}", f)),
+                None => ret = None
+            }
+            return ret;
         }
         
     }
