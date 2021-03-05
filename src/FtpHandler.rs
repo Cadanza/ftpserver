@@ -1,7 +1,6 @@
-
-
 #[path = "."]
-/// # FTH Command Handler
+
+/// # FTP Command Handler
 /// 
 /// * author : Saulquin Clément/Aurélie
 /// * version : 1.0
@@ -32,11 +31,8 @@ pub mod ftp_handler{
     #[path = "portHandler.rs"]
     mod port_handler;
 
-    #[path = "cwdHandler.rs"]
-    mod cwd_handler;
-
-    #[path = "cdupHandler.rs"]
-    mod cdup_handler;
+    #[path = "cdHandler.rs"]
+    mod cd_handler;
 
     #[path = "mkdHandler.rs"]
     mod mkd_handler;
@@ -50,6 +46,9 @@ pub mod ftp_handler{
     #[path = "rntoHandler.rs"]
     mod rnto_handler;
 
+    #[path = "pwdHandler.rs"]
+    mod pwd_handler;
+
 
     use std::net::{TcpStream, Shutdown};
     use user_handler::user_handler::*;
@@ -60,12 +59,12 @@ pub mod ftp_handler{
     use list_handler::list_handler::*;
     use auth_handler::auth_handler::*;
     use port_handler::port_handler::*;
-    use cwd_handler::cwd_handler::*;
-    use cdup_handler::cdup_handler::*;
+    use cd_handler::cd_handler::*;
     use mkd_handler::mkd_handler::*;
     use rmd_handler::rmd_handler::*;
     use rnfr_handler::rnfr_handler::*;
     use rnto_handler::rnto_handler::*;
+    use pwd_handler::pwd_handler::*;
 
     /// # Structure who contains variables to handle ftp
     pub struct FtpHandler{
@@ -88,10 +87,15 @@ pub mod ftp_handler{
         /// Good password was sent by user
         good_psw : bool,
 
+        /// Actual path of user
         actual_path : String,
 
+        /// server root directory
         root_path : String,
 
+        /// file to rename given by RNFR handler
+        /// - *String* : RNFR handler was called and it found the file 
+        /// - *None* : default value or RNFR handler was called and didn't find the file
         file_to_rename : Option<String>
     }
         
@@ -141,7 +145,7 @@ pub mod ftp_handler{
             let command : &str = data[0];
             let arg_pop : Option<String> = data_bis.pop();
             
-            println!("{:?}", self.file_to_rename);
+            println!("{}", self.actual_path);
             
 
             match command{
@@ -159,6 +163,12 @@ pub mod ftp_handler{
                     self.running = false;
                     QuitHandler{}.execute(&mut self.server_stream);
                 },
+
+                "PWD" => {
+                    PwdHandler{
+                        actual_path : self.get_path()
+                    }.execute(&mut self.server_stream);
+                }
 
                 "LIST" => {
 
@@ -198,7 +208,7 @@ pub mod ftp_handler{
                 },
 
                 "CWD" => {
-                    self.actual_path = CwdHandler{
+                    self.actual_path = CdHandler{
                         session_open : self.session_open(), 
                         actual_path : self.get_path(), 
                         directory : arg_pop,
@@ -208,10 +218,11 @@ pub mod ftp_handler{
                 },
 
                 "CDUP" => {
-                    self.actual_path = CdupHandler{
-                        session_open : self.session_open(),
-                        actual_path : self.get_path(),
-                        root : self.get_root(),
+                    self.actual_path = CdHandler{
+                        session_open : self.session_open(), 
+                        actual_path : self.get_path(), 
+                        directory : Some(format!("..")),
+                        root : self.get_root()
                     }.execute(&mut self.server_stream);
                 }
 

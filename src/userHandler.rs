@@ -1,6 +1,6 @@
 #[doc(inline)]
 #[path = "."]
-/// Module to handle USER ftp command 
+/// # Module to handle USER ftp command 
 /// 
 /// * author : Saulquin Clément/Aurélie
 /// * version : 1.0

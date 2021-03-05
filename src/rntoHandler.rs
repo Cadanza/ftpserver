@@ -1,5 +1,5 @@
 #[path ="."]
-/// Module to handle RNTO ftp command
+/// # Module to handle RNTO ftp command
 /// 
 /// * author : Saulquin Clément/Aurélie
 /// * version : 1.0
@@ -15,16 +15,29 @@ pub mod rnto_handler{
     #[path = "common.rs"]
     mod common;
 
+    #[path = "fileSystemHandler.rs"]
+    mod file_system_handler;
+
     use std::net::TcpStream;
     use messages::messages::*;
     use code::code::*;
     use common::common::*;
-    use std::fs;
+    use file_system_handler::file_system_handler::*;
 
-    /// # Structure to handle MDK command
+    /// # Structure to handle RNTO command
     pub struct RntoHandler {
+
+        /// say if user session is open or not
         pub session_open : bool,
+
+        /// Path of directory to rename. Fiound by RNFR handler
+        /// - *String* : A directory was found
+        /// - *None* : No directory was found
         pub path : Option<String>,
+
+        /// New name of directory
+        /// - *String* : Name was found on command argument
+        /// - *None* : no argument was found on command
         pub name : Option<String>,
     } 
 
@@ -49,17 +62,18 @@ pub mod rnto_handler{
                     Some(p) => {
                         match &self.name {
                             Some(n) => {
-                                let name =self.absolute_name(format!("{}", p), format!("{}", n));
+                                let name =name_to_absolute_path(format!("{}", p), format!("{}", n));
 
-                                match fs::rename(format!("{}", p), name){
-                                    Ok(_) => {
-                                        c = FILE_SERVICE_FINISH_C;
-                                        m = FILE_SERVICE_FINISH_M;
-                                    },
-                                    Err(_) => {
-                                        c = UNVA_FILE_NAME_C;
-                                        m = UNVA_FILE_NAME_M;
-                                    }
+                                if rename_dir(format!("{}", p), name){
+                                    
+                                    c = FILE_SERVICE_FINISH_C;
+                                    m = FILE_SERVICE_FINISH_M;
+
+                                }else {
+
+                                    c = UNVA_FILE_NAME_C;
+                                    m = UNVA_FILE_NAME_M;
+                                    
                                 }
                             },
                             None => {
@@ -76,35 +90,7 @@ pub mod rnto_handler{
             }
 
             write_line(format!("{} {}", c, m), stream);
-        }
-
-
-        
-        /// Convert a simple name to new absolute path of rename file
-        /// 
-        /// # Arguments
-        /// 
-        /// - **last_name** *String* : absolute path of last name
-        /// - **new_name** *String* : new name of file/folder
-        /// 
-        /// # Returns
-        /// 
-        /// - *String* : new absolute path of file/folder with it new name
-        /// 
-        fn absolute_name(&self, last_name : String, new_name : String) -> String {
-            let mut cut_ln : Vec<&str> = last_name.split("/").collect();
-            let cut_name : &str = &*new_name;
-
-            cut_ln.pop();
-            cut_ln.push(cut_name);
-
-            let ret : String = cut_ln.join("/");
-
-            return format!("{}", ret);
-        }
-    
+        }    
     }
-
-    
 
 }

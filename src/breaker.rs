@@ -16,7 +16,9 @@ pub mod breaker{
     /// - **running** *Arc<AtomicBool>* : 
     ///     - **true** if a SIGINT was recieve
     ///     - **false** default value
+    /// 
     pub struct EscapeHandler{
+        
         /// Contains boolean to check if we had recieve SIGINT or not
         running : Arc<AtomicBool>
     }

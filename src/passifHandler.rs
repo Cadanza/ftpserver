@@ -23,6 +23,8 @@ pub mod passiv_handler{
     use common::common::*;
 
     pub struct PassivHandler {
+
+        /// say if user session is open
         pub session_open : bool,
     } 
 

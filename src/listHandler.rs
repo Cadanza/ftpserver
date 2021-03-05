@@ -22,7 +22,7 @@ pub mod list_handler{
     use code::code::*;
     use common::common::*;
     use std::process::Command;
-
+    
     /// # Structure to handle the LIST command
     /// 
     /// # Parameters
@@ -40,6 +40,7 @@ pub mod list_handler{
         /// if session is not open, do nothing
         pub session_open : bool,
 
+        /// path of directory to print
         pub path : String,
     } 
 
@@ -111,8 +112,7 @@ pub mod list_handler{
             } else {
                 log::info!("ls {} -n failed\n{}", self.path, String::from_utf8_lossy(&output.stderr));
                 return None;
-            }
-                    
+            }         
             
         }
 

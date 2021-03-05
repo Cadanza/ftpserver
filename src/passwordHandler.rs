@@ -1,6 +1,6 @@
 
 #[path ="."]
-/// Module to handle PASS ftp command
+/// # Module to handle PASS ftp command
 /// 
 /// * author : Saulquin Clément/Aurélie
 /// * version : 1.0

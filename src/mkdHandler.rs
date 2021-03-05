@@ -1,5 +1,5 @@
 #[path ="."]
-/// Module to handle MKD ftp command
+/// # Module to handle MKD ftp command
 /// 
 /// * author : Saulquin Clément/Aurélie
 /// * version : 1.0
@@ -15,17 +15,30 @@ pub mod mkd_handler{
     #[path = "common.rs"]
     mod common;
 
+    #[path = "fileSystemHandler.rs"]
+    mod file_system_handler;
+
     use std::net::TcpStream;
     use messages::messages::*;
     use code::code::*;
     use common::common::*;
-    use std::process::Command;
+    use file_system_handler::file_system_handler::*;
 
     /// # Structure to handle MDK command
     pub struct MkdHandler {
+
+        /// say if user session is open
         pub session_open : bool,
+
+        /// path where the user want to create folder
+        /// - *String* : path was given on arguments
+        /// - *None* : no path found on argument command
         pub path : Option<String>,
+
+        /// actual path of user on server
         pub actual_path : String,
+
+        /// server root directory
         pub root : String
     } 
 
@@ -49,9 +62,14 @@ pub mod mkd_handler{
 
                 match &self.path {
                     Some(dir) => {
-                        match self.relative_to_absolute_path(format!("{}", dir)) {
+                        match relative_to_absolute_path(
+                            format!("{}", self.root),
+                            format!("{}", self.actual_path),
+                            format!("{}", dir)) {
+
                             Some(abs_dir) => {
-                                if self.mkdir(abs_dir){
+
+                                if mkdir(abs_dir){
                                     log::info!("{} was correctly created", dir);
                                     c = PATH_CREATED_C;
                                     m = PATH_CREATED_M;
@@ -78,71 +96,6 @@ pub mod mkd_handler{
             write_line(format!("{} {}", c, m), stream);
         }
 
-        /// Transform a relative path to an absolute path
-        /// 
-        /// # Arguments
-        /// 
-        /// - **dir** *String* : relative path to directory
-        /// 
-        /// # Returns
-        /// 
-        /// - *Option<String>*:
-        ///     - *String* : absolute path of directory
-        ///     - *None* : absolute path was above the root
-        /// 
-        fn relative_to_absolute_path(&self, dir : String) -> Option<String>{
-            let mut cut_dir : Vec<&str> = dir.split("/").collect();
-            let mut absolute_path : Vec<&str> = self.actual_path.split("/").collect();
-            let mut cut_root : Vec<&str> = self.root.split("/").collect();
-
-            absolute_path.pop();    //remove the last element ""
-            cut_root.pop();         // remove the last element ""
-
-            if cut_dir[0] == "."{   //if dir start with ./ we just remove . element
-                cut_dir.remove(0);
-                
-            } else {    // else we remove all .. element and actualise the futur absolute path
-                for d in cut_dir.clone() {
-                    if d == ".."{
-                        absolute_path.pop();
-                        cut_dir.retain(|&x| x != d);
-                    }
-                }
-            }
-            
-            
-            if absolute_path.len() < cut_root.len() { //if we're under the root
-                log::info!("Try to go above the root folder");
-                return None;
-            }
-
-            // construction of absolute path
-            for d in cut_dir {
-                if d != ""{
-                    absolute_path.push(d);
-                }
-            }
-
-            return Some(absolute_path.join("/"));
-
-        }
-
-        /// call mkdir unix command
-        /// 
-        /// # Arguments
-        /// 
-        /// - **dir** *String* : absolute directory path
-        /// 
-        /// # Returns
-        /// 
-        /// - *bool* : 
-        ///     - *true* if command execute with success
-        ///     - *false* else 
-        fn mkdir(&self, dir : String) -> bool {
-            let output = Command::new("mkdir").arg(dir).output().expect("failder to execute process");
-
-            return  output.status.success();
-        }
     
     }
 

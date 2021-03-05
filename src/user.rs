@@ -38,6 +38,7 @@ pub mod user{
         /// Message channel from main thread to user thread to say when server is shutdown
         pub stop : mpsc::Receiver<bool>,
 
+        /// server root directory
         pub path : String,
     }
 
@@ -60,7 +61,6 @@ pub mod user{
 
             write_line(format!("{} {}", WELCOM_C, WELCOM_M), &mut self.server_stream);
             log::info!("entry message correctly send\n");
-            //write_line(String::from("TYPE I"), &mut self.server_stream);
 
             while handler.running() && !stop_loop {
 
