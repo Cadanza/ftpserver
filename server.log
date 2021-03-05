@@ -1,127 +1,210 @@
-[00:00:00.000] (7fe8835ca640) INFO   Server Open
+[00:00:00.000] (7fe133687640) INFO   Server Open
 
-[00:00:09.266] (7fe8835ca640) INFO   new connection 127.0.0.1:42104
+[00:00:04.287] (7fe133687640) INFO   new connection 127.0.0.1:42734
 
-[00:00:09.266] (7fe8833c5700) INFO   send => 220 FTP Server (Axolotl FTP)
-[00:00:09.266] (7fe8833c5700) INFO   entry message correctly send
+[00:00:04.287] (7fe133482700) INFO   send => 220 FTP Server (Axolotl FTP)
+[00:00:04.287] (7fe133482700) INFO   entry message correctly send
 
-[00:00:11.978] (7fe8833c5700) INFO   recieve => USER anonymous
-[00:00:11.978] (7fe8833c5700) INFO   send => 331 Please specify the password
-[00:00:11.978] (7fe8833c5700) INFO   USER command handle finish
+[00:00:04.287] (7fe133482700) INFO   recieve => AUTH TLS
+[00:00:04.287] (7fe133482700) INFO   send => 530 Please login with USER and PASS
+[00:00:04.287] (7fe133482700) INFO   AUTH command handle finish
 
-[00:00:14.232] (7fe8833c5700) INFO   recieve => PASS anonymous
-[00:00:14.232] (7fe8833c5700) INFO   Password is correct
-[00:00:14.232] (7fe8833c5700) INFO   send => 230 Session open
-[00:00:14.232] (7fe8833c5700) INFO   PASS command handle finish
+[00:00:04.287] (7fe133482700) INFO   recieve => AUTH SSL
+[00:00:04.287] (7fe133482700) INFO   send => 530 Please login with USER and PASS
+[00:00:04.288] (7fe133482700) INFO   AUTH command handle finish
 
-[00:00:14.232] (7fe8833c5700) INFO   recieve => SYST
-[00:00:14.232] (7fe8833c5700) INFO   SYST is not implemented on Axolotl FTP Server
-[00:00:14.232] (7fe8833c5700) INFO   send => 202 Unknow command error
-[00:00:14.232] (7fe8833c5700) INFO   SYST command handle finish
+[00:00:06.619] (7fe133482700) INFO   recieve => USER anonymous
+[00:00:06.619] (7fe133482700) INFO   send => 331 Please specify the password
+[00:00:06.619] (7fe133482700) INFO   USER command handle finish
 
-[00:00:30.779] (7fe8833c5700) INFO   recieve => PORT 127,0,0,1,209,9
-[00:00:30.779] (7fe8833c5700) INFO   Tcp data stream open at 127.0.0.1:53513 address
-[00:00:30.779] (7fe8833c5700) INFO   send => 200 Command conclud
-[00:00:30.779] (7fe8833c5700) INFO   PORT command handle finish
+[00:00:06.620] (7fe133482700) INFO   recieve => PASS anonymous
+[00:00:06.620] (7fe133482700) INFO   Password is correct
+[00:00:06.620] (7fe133482700) INFO   send => 230 Session open
+[00:00:06.620] (7fe133482700) INFO   PASS command handle finish
 
-[00:00:30.779] (7fe8833c5700) INFO   recieve => LIST
-[00:00:30.779] (7fe8833c5700) INFO   send => 150 Here commes the directoly listing
-[00:00:30.780] (7fe8833c5700) INFO   send => 226 Directory send Ok.
-[00:00:30.781] (7fe8833c5700) INFO   LIST command handle finish
+[00:00:06.620] (7fe133482700) INFO   recieve => SYST
+[00:00:06.620] (7fe133482700) INFO   SYST is not implemented on Axolotl FTP Server
+[00:00:06.620] (7fe133482700) INFO   send => 202 Unknow command error
+[00:00:06.620] (7fe133482700) INFO   SYST command handle finish
 
-[00:00:35.890] (7fe8833c5700) INFO   recieve => CWD dossier
-[00:00:35.890] (7fe8833c5700) INFO   move path user to ../server_test/dossier
-[00:00:35.890] (7fe8833c5700) INFO   send => 250 Service file finish
-[00:00:35.890] (7fe8833c5700) INFO   CWD command handle finish
+[00:00:06.620] (7fe133482700) INFO   recieve => FEAT
+[00:00:06.620] (7fe133482700) INFO   FEAT is not implemented on Axolotl FTP Server
+[00:00:06.620] (7fe133482700) INFO   send => 202 Unknow command error
+[00:00:06.620] (7fe133482700) INFO   FEAT command handle finish
 
-[00:00:37.342] (7fe8833c5700) INFO   recieve => PORT 127,0,0,1,227,167
-[00:00:37.343] (7fe8833c5700) INFO   Tcp data stream open at 127.0.0.1:58279 address
-[00:00:37.343] (7fe8833c5700) INFO   send => 200 Command conclud
-[00:00:37.343] (7fe8833c5700) INFO   PORT command handle finish
+[00:00:06.894] (7fe133482700) INFO   recieve => PWD
+[00:00:06.894] (7fe133482700) INFO   send => 257 / is current directory
+[00:00:06.894] (7fe133482700) INFO   PWD command handle finish
 
-[00:00:37.343] (7fe8833c5700) INFO   recieve => LIST
-[00:00:37.343] (7fe8833c5700) INFO   send => 150 Here commes the directoly listing
-[00:00:37.344] (7fe8833c5700) INFO   send => 226 Directory send Ok.
-[00:00:37.344] (7fe8833c5700) INFO   LIST command handle finish
+[00:00:06.895] (7fe133482700) INFO   recieve => TYPE I
+[00:00:06.895] (7fe133482700) INFO   TYPE is not implemented on Axolotl FTP Server
+[00:00:06.895] (7fe133482700) INFO   send => 202 Unknow command error
+[00:00:06.895] (7fe133482700) INFO   TYPE command handle finish
 
-[00:00:58.081] (7fe8833c5700) INFO   recieve => CWD ../dossier/fichiers-rust
-[00:00:58.081] (7fe8833c5700) INFO   move path user to ../server_test/dossier/fichiers-rust
-[00:00:58.081] (7fe8833c5700) INFO   send => 250 Service file finish
-[00:00:58.081] (7fe8833c5700) INFO   CWD command handle finish
+[00:00:06.896] (7fe133482700) INFO   recieve => PASV
+[00:00:06.896] (7fe133482700) INFO   Passiv Tcp address is : 127.0.0.1 : 1025
+[00:00:06.896] (7fe133482700) INFO   send => 227 Enterring passive mod (127,0,0,1,4,1)
+[00:00:06.896] (7fe133482700) INFO   PASV command handle finish
 
-[00:00:59.447] (7fe8833c5700) INFO   recieve => PORT 127,0,0,1,163,85
-[00:00:59.447] (7fe8833c5700) INFO   Tcp data stream open at 127.0.0.1:41813 address
-[00:00:59.447] (7fe8833c5700) INFO   send => 200 Command conclud
-[00:00:59.447] (7fe8833c5700) INFO   PORT command handle finish
+[00:00:06.896] (7fe133482700) INFO   recieve => LIST
+[00:00:06.896] (7fe133482700) INFO   send => 150 Here commes the directoly listing
+[00:00:06.897] (7fe133482700) INFO   send => 226 Directory send Ok.
+[00:00:06.897] (7fe133482700) INFO   LIST command handle finish
 
-[00:00:59.447] (7fe8833c5700) INFO   recieve => LIST
-[00:00:59.447] (7fe8833c5700) INFO   send => 150 Here commes the directoly listing
-[00:00:59.448] (7fe8833c5700) INFO   send => 226 Directory send Ok.
-[00:00:59.448] (7fe8833c5700) INFO   LIST command handle finish
+[00:00:09.648] (7fe133482700) INFO   recieve => CWD /clara
+[00:00:09.648] (7fe133482700) INFO   move path user to ../server_test//clara
+[00:00:09.648] (7fe133482700) INFO   send => 250 Service file finish
+[00:00:09.648] (7fe133482700) INFO   CWD command handle finish
 
-[00:01:04.377] (7fe8833c5700) INFO   recieve => CWD ..
-[00:01:04.377] (7fe8833c5700) INFO   move path user to ../server_test/dossier
-[00:01:04.377] (7fe8833c5700) INFO   send => 250 Service file finish
-[00:01:04.377] (7fe8833c5700) INFO   CWD command handle finish
+[00:00:09.649] (7fe133482700) INFO   recieve => PWD
+[00:00:09.649] (7fe133482700) INFO   send => 257 /clara/ is current directory
+[00:00:09.649] (7fe133482700) INFO   PWD command handle finish
 
-[00:01:07.323] (7fe8833c5700) INFO   recieve => CWD ..
-[00:01:07.324] (7fe8833c5700) INFO   move path user to ../server_test
-[00:01:07.324] (7fe8833c5700) INFO   send => 250 Service file finish
-[00:01:07.324] (7fe8833c5700) INFO   CWD command handle finish
+[00:00:09.649] (7fe133482700) INFO   recieve => PASV
+[00:00:09.649] (7fe133482700) INFO   Passiv Tcp address is : 127.0.0.1 : 1025
+[00:00:09.650] (7fe133482700) INFO   send => 227 Enterring passive mod (127,0,0,1,4,1)
+[00:00:09.650] (7fe133482700) INFO   PASV command handle finish
 
-[00:01:08.305] (7fe8833c5700) INFO   recieve => PORT 127,0,0,1,200,177
-[00:01:08.306] (7fe8833c5700) INFO   Tcp data stream open at 127.0.0.1:51377 address
-[00:01:08.306] (7fe8833c5700) INFO   send => 200 Command conclud
-[00:01:08.306] (7fe8833c5700) INFO   PORT command handle finish
+[00:00:09.650] (7fe133482700) INFO   recieve => LIST
+[00:00:09.650] (7fe133482700) INFO   send => 150 Here commes the directoly listing
+[00:00:09.651] (7fe133482700) INFO   send => 226 Directory send Ok.
+[00:00:09.651] (7fe133482700) INFO   LIST command handle finish
 
-[00:01:08.306] (7fe8833c5700) INFO   recieve => LIST
-[00:01:08.306] (7fe8833c5700) INFO   send => 150 Here commes the directoly listing
-[00:01:08.307] (7fe8833c5700) INFO   send => 226 Directory send Ok.
-[00:01:08.307] (7fe8833c5700) INFO   LIST command handle finish
+[00:00:11.258] (7fe133482700) INFO   recieve => CWD /dossier
+[00:00:11.258] (7fe133482700) INFO   /dossier doesn't exist
+[00:00:11.258] (7fe133482700) INFO   send => 550 File asked is not accesssible
+[00:00:11.258] (7fe133482700) INFO   CWD command handle finish
 
-[00:01:25.162] (7fe8833c5700) INFO   recieve => MKD ../truc
-[00:01:25.162] (7fe8833c5700) INFO   send => 550 File asked is not accesssible
-[00:01:25.162] (7fe8833c5700) INFO   MKD command handle finish
+[00:00:32.235] (7fe133482700) INFO   recieve => CWD /
+[00:00:32.235] (7fe133482700) INFO   move path user to ../server_test//clara
+[00:00:32.235] (7fe133482700) INFO   send => 250 Service file finish
+[00:00:32.235] (7fe133482700) INFO   CWD command handle finish
 
-[00:01:42.651] (7fe8833c5700) INFO   recieve => MKD truc
-[00:01:42.651] (7fe8833c5700) INFO   truc was correctly created
-[00:01:42.651] (7fe8833c5700) INFO   send => 257 Path correctly created
-[00:01:42.652] (7fe8833c5700) INFO   MKD command handle finish
+[00:00:32.236] (7fe133482700) INFO   recieve => PWD
+[00:00:32.236] (7fe133482700) INFO   send => 257 /clara/ is current directory
+[00:00:32.236] (7fe133482700) INFO   PWD command handle finish
 
-[00:01:52.486] (7fe8833c5700) INFO   recieve => CWD dossier
-[00:01:52.486] (7fe8833c5700) INFO   move path user to ../server_test/dossier
-[00:01:52.486] (7fe8833c5700) INFO   send => 250 Service file finish
-[00:01:52.486] (7fe8833c5700) INFO   CWD command handle finish
+[00:00:32.236] (7fe133482700) INFO   recieve => CWD dossier
+[00:00:32.236] (7fe133482700) INFO   dossier doesn't exist
+[00:00:32.236] (7fe133482700) INFO   send => 550 File asked is not accesssible
+[00:00:32.236] (7fe133482700) INFO   CWD command handle finish
 
-[00:01:54.740] (7fe8833c5700) INFO   recieve => PORT 127,0,0,1,138,135
-[00:01:54.740] (7fe8833c5700) INFO   Tcp data stream open at 127.0.0.1:35463 address
-[00:01:54.740] (7fe8833c5700) INFO   send => 200 Command conclud
-[00:01:54.740] (7fe8833c5700) INFO   PORT command handle finish
+[00:00:45.972] (7fe133482700) INFO   recieve => CWD /clara
+[00:00:45.972] (7fe133482700) INFO   /clara doesn't exist
+[00:00:45.972] (7fe133482700) INFO   send => 550 File asked is not accesssible
+[00:00:45.972] (7fe133482700) INFO   CWD command handle finish
 
-[00:01:54.740] (7fe8833c5700) INFO   recieve => LIST
-[00:01:54.741] (7fe8833c5700) INFO   send => 150 Here commes the directoly listing
-[00:01:54.742] (7fe8833c5700) INFO   send => 226 Directory send Ok.
-[00:01:54.742] (7fe8833c5700) INFO   LIST command handle finish
+[00:01:00.944] (7fe133482700) INFO   recieve => CWD /dossier
+[00:01:00.945] (7fe133482700) INFO   /dossier doesn't exist
+[00:01:00.945] (7fe133482700) INFO   send => 550 File asked is not accesssible
+[00:01:00.945] (7fe133482700) INFO   CWD command handle finish
 
-[00:02:08.417] (7fe8833c5700) INFO   recieve => RNFR ../truc
-[00:02:08.417] (7fe8833c5700) INFO   send => 350 File service is waiting for more information
-[00:02:08.417] (7fe8833c5700) INFO   RNFR command handle finish
+[00:01:27.979] (7fe133482700) INFO   recieve => CWD /c
+[00:01:27.979] (7fe133482700) INFO   /c doesn't exist
+[00:01:27.979] (7fe133482700) INFO   send => 550 File asked is not accesssible
+[00:01:27.979] (7fe133482700) INFO   CWD command handle finish
 
-[00:02:08.417] (7fe8833c5700) INFO   recieve => RNTO ../clara
-[00:02:08.417] (7fe8833c5700) INFO   send => 553 Unvalaible file name
-[00:02:08.418] (7fe8833c5700) INFO   RNTO command handle finish
+[00:01:42.290] (7fe133482700) INFO   recieve => CWD /dossier
+[00:01:42.290] (7fe133482700) INFO   /dossier doesn't exist
+[00:01:42.290] (7fe133482700) INFO   send => 550 File asked is not accesssible
+[00:01:42.290] (7fe133482700) INFO   CWD command handle finish
 
-[00:02:22.314] (7fe8833c5700) INFO   recieve => RNFR ../truc
-[00:02:22.314] (7fe8833c5700) INFO   send => 350 File service is waiting for more information
-[00:02:22.314] (7fe8833c5700) INFO   RNFR command handle finish
+[00:01:47.701] (7fe133482700) INFO   recieve => 
+[00:01:47.751] (7fe133687640) INFO   new connection 127.0.0.1:42754
 
-[00:02:22.314] (7fe8833c5700) INFO   recieve => RNTO clara
-[00:02:22.314] (7fe8833c5700) INFO   send => 250 Service file finish
-[00:02:22.314] (7fe8833c5700) INFO   RNTO command handle finish
+[00:01:47.751] (7fe133281700) INFO   send => 220 FTP Server (Axolotl FTP)
+[00:01:47.751] (7fe133281700) INFO   entry message correctly send
 
-[00:02:29.397] (7fe8833c5700) INFO   recieve => QUIT
-[00:02:29.397] (7fe8833c5700) INFO   send => 221 Session close, bye bye!
-[00:02:29.397] (7fe8833c5700) INFO   QUIT command handle finish
+[00:01:47.751] (7fe133281700) INFO   recieve => AUTH TLS
+[00:01:47.751] (7fe133281700) INFO   send => 530 Please login with USER and PASS
+[00:01:47.751] (7fe133281700) INFO   AUTH command handle finish
 
-[00:02:31.289] (7fe8835c6700) INFO   recieve SIG INT signal
-[00:02:31.289] (7fe8835ca640) INFO   server close
+[00:01:47.751] (7fe133281700) INFO   recieve => AUTH SSL
+[00:01:47.751] (7fe133281700) INFO   send => 530 Please login with USER and PASS
+[00:01:47.751] (7fe133281700) INFO   AUTH command handle finish
+
+[00:01:47.752] (7fe133281700) INFO   recieve => USER anonymous
+[00:01:47.752] (7fe133281700) INFO   send => 331 Please specify the password
+[00:01:47.752] (7fe133281700) INFO   USER command handle finish
+
+[00:01:47.752] (7fe133281700) INFO   recieve => PASS anonymous
+[00:01:47.752] (7fe133281700) INFO   Password is correct
+[00:01:47.752] (7fe133281700) INFO   send => 230 Session open
+[00:01:47.752] (7fe133281700) INFO   PASS command handle finish
+
+[00:01:47.752] (7fe133281700) INFO   recieve => PWD
+[00:01:47.753] (7fe133281700) INFO   send => 257 / is current directory
+[00:01:47.753] (7fe133281700) INFO   PWD command handle finish
+
+[00:01:50.528] (7fe133281700) INFO   recieve => 
+[00:01:50.550] (7fe133687640) INFO   new connection 127.0.0.1:42756
+
+[00:01:50.550] (7fe133080700) INFO   send => 220 FTP Server (Axolotl FTP)
+[00:01:50.550] (7fe133080700) INFO   entry message correctly send
+
+[00:01:50.550] (7fe133080700) INFO   recieve => AUTH TLS
+[00:01:50.550] (7fe133080700) INFO   send => 530 Please login with USER and PASS
+[00:01:50.551] (7fe133080700) INFO   AUTH command handle finish
+
+[00:01:50.551] (7fe133080700) INFO   recieve => AUTH SSL
+[00:01:50.551] (7fe133080700) INFO   send => 530 Please login with USER and PASS
+[00:01:50.551] (7fe133080700) INFO   AUTH command handle finish
+
+[00:01:50.551] (7fe133080700) INFO   recieve => USER anonymous
+[00:01:50.551] (7fe133080700) INFO   send => 331 Please specify the password
+[00:01:50.551] (7fe133080700) INFO   USER command handle finish
+
+[00:01:50.551] (7fe133080700) INFO   recieve => PASS anonymous
+[00:01:50.551] (7fe133080700) INFO   Password is correct
+[00:01:50.551] (7fe133080700) INFO   send => 230 Session open
+[00:01:50.551] (7fe133080700) INFO   PASS command handle finish
+
+[00:01:50.552] (7fe133080700) INFO   recieve => PWD
+[00:01:50.552] (7fe133080700) INFO   send => 257 / is current directory
+[00:01:50.552] (7fe133080700) INFO   PWD command handle finish
+
+[00:01:53.276] (7fe133080700) INFO   recieve => CWD /dossier
+[00:01:53.276] (7fe133080700) INFO   move path user to ../server_test//dossier
+[00:01:53.276] (7fe133080700) INFO   send => 250 Service file finish
+[00:01:53.276] (7fe133080700) INFO   CWD command handle finish
+
+[00:01:53.276] (7fe133080700) INFO   recieve => PWD
+[00:01:53.276] (7fe133080700) INFO   send => 257 /dossier/ is current directory
+[00:01:53.276] (7fe133080700) INFO   PWD command handle finish
+
+[00:01:53.277] (7fe133080700) INFO   recieve => TYPE I
+[00:01:53.277] (7fe133080700) INFO   TYPE is not implemented on Axolotl FTP Server
+[00:01:53.277] (7fe133080700) INFO   send => 202 Unknow command error
+[00:01:53.277] (7fe133080700) INFO   TYPE command handle finish
+
+[00:01:53.277] (7fe133080700) INFO   recieve => PASV
+[00:01:53.277] (7fe133080700) INFO   Passiv Tcp address is : 127.0.0.1 : 1025
+[00:01:53.278] (7fe133080700) INFO   send => 227 Enterring passive mod (127,0,0,1,4,1)
+[00:01:53.278] (7fe133080700) INFO   PASV command handle finish
+
+[00:01:53.278] (7fe133080700) INFO   recieve => LIST
+[00:01:53.278] (7fe133080700) INFO   send => 150 Here commes the directoly listing
+[00:01:53.280] (7fe133080700) INFO   send => 226 Directory send Ok.
+[00:01:53.280] (7fe133080700) INFO   LIST command handle finish
+
+[00:02:08.715] (7fe133080700) INFO   recieve => RNFR fichiers-c
+[00:02:08.716] (7fe133080700) INFO   send => 350 File service is waiting for more information
+[00:02:08.716] (7fe133080700) INFO   RNFR command handle finish
+
+[00:02:08.717] (7fe133080700) INFO   recieve => RNTO Cfile
+[00:02:08.717] (7fe133080700) INFO   send => 250 Service file finish
+[00:02:08.717] (7fe133080700) INFO   RNTO command handle finish
+
+[00:02:32.255] (7fe133080700) INFO   recieve => PASV
+[00:02:32.255] (7fe133080700) INFO   Passiv Tcp address is : 127.0.0.1 : 1025
+[00:02:32.255] (7fe133080700) INFO   send => 227 Enterring passive mod (127,0,0,1,4,1)
+[00:02:32.256] (7fe133080700) INFO   PASV command handle finish
+
+[00:02:32.256] (7fe133080700) INFO   recieve => LIST
+[00:02:32.256] (7fe133080700) INFO   send => 150 Here commes the directoly listing
+[00:02:32.258] (7fe133080700) INFO   send => 226 Directory send Ok.
+[00:02:32.258] (7fe133080700) INFO   LIST command handle finish
+
+[00:03:03.884] (7fe133080700) INFO   recieve => 
+[00:05:15.346] (7fe133683700) INFO   recieve SIG INT signal
+[00:05:15.347] (7fe133687640) INFO   server close

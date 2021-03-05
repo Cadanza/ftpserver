@@ -11,6 +11,64 @@ pub mod file_system_handler {
     use std::fs;
 
 
+    pub fn get_absolute_path(root : String, actual_path : String) -> String {
+        let mut cut_path : Vec<&str> = actual_path.split("/").collect();
+        let mut cut_root : Vec<&str> = root.split("/").collect();
+
+        if cut_path.last() == Some(&"") {
+            cut_path.pop();
+        }
+
+        if cut_root.last() == Some(&"") {
+        cut_root.pop();
+        }
+
+        for d in cut_path {
+            cut_root.push(d);
+        }
+
+        return cut_root.join("/")
+    }
+
+    pub fn change_path(actual_path : String, path : String) -> Option<String> {
+        let mut cut_path : Vec<&str> = path.split("/").collect();
+        let mut cut_act_path : Vec<&str> = actual_path.split("/").collect();
+
+        if cut_path.last() == Some(&"") {
+            cut_path.pop();
+        }
+
+        if cut_act_path.last() == Some(&"") {
+            cut_act_path.pop();
+        }
+
+
+        if cut_path[0] == "." || cut_path[0] == "" {
+            cut_path.remove(0);
+        } else {
+            let clone = cut_path.clone();
+            for d in clone{
+                if d == ".." {
+                    cut_act_path.pop();
+                    cut_path.retain(|&x |x!=d);
+                }
+            }
+        }
+
+        if cut_act_path.len() == 0 {
+            println!("Non!");
+            return None;
+        }
+
+        for d in cut_path {
+            cut_act_path.push(d);
+        }
+
+        let ret : String = cut_act_path.join("/");
+        
+        return Some(ret);
+    }
+
     /// Transform a relative path to an absolute path
     /// 
     /// # Arguments
@@ -24,38 +82,16 @@ pub mod file_system_handler {
     ///     - *None* : absolute path was above the root
     /// 
     pub fn relative_to_absolute_path(root : String, actual_path : String, path : String) -> Option<String> {
-        let mut cut_path : Vec<&str> = path.split("/").collect();
-        let mut cut_abs_path : Vec<&str> = actual_path.split("/").collect();
-        
+        let chang_path : Option<String> = change_path(actual_path, path);
 
-        // remove last element ""
-        cut_abs_path.pop();
-
-        if cut_path[0] == "."{
-            cut_path.remove(0);
-        } else {
-            let clone = cut_path.clone();
-            for d in clone{
-                if d == ".." {
-                    cut_abs_path.pop();
-                    cut_path.retain(|&x |x!=d);
-                }
+        match chang_path {
+            Some(p) => {
+                return Some(get_absolute_path(root, p));
+            },
+            None => {
+                return None;
             }
         }
-
-        if cut_path_is_under_root(root, &mut cut_abs_path) {
-            return None;
-        }
-
-        for d in cut_path {
-            if d != "" {
-                cut_abs_path.push(d);
-            }
-        }
-
-        let ret_string : String =cut_abs_path.join("/");
-        
-        return Some(ret_string);
 
     }
 

@@ -1,5 +1,5 @@
 #[path ="."]
-/// Module to handle QUIT ftp command
+/// # Module to handle QUIT ftp command
 /// 
 /// * author : Saulquin Clément/Aurélie
 /// * version : 1.0

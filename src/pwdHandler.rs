@@ -36,15 +36,8 @@ pub mod pwd_handler{
         /// - *stream** *TcpStream* stream use to send response to user
         /// 
         pub fn execute(&self, stream : &mut TcpStream){
-            let mut cut_actual_path : Vec<&str> = self.actual_path.split("/").collect();
 
-            println!("{:?}", cut_actual_path);
-            cut_actual_path.remove(0);
-            cut_actual_path.remove(0);
-            cut_actual_path.push("");
-            let p : String = cut_actual_path.join("/");
-
-            write_line(format!("{} {} is current directory", PATH_CREATED_C, p), stream);
+            write_line(format!("{} {} is current directory", PATH_CREATED_C, self.actual_path), stream);
         }
     }
 

@@ -16,12 +16,16 @@ pub mod list_handler{
     #[path = "common.rs"]
     mod common;
 
+    #[path = "fileSystemHandler.rs"]
+    mod file_system_handler;
+
 
     use std::net::TcpStream;
     use messages::messages::*;
     use code::code::*;
     use common::common::*;
     use std::process::Command;
+    use file_system_handler::file_system_handler::*;
     
     /// # Structure to handle the LIST command
     /// 
@@ -41,7 +45,9 @@ pub mod list_handler{
         pub session_open : bool,
 
         /// path of directory to print
-        pub path : String,
+        pub actual_path : String,
+
+        pub root : String
     } 
 
     impl ListHandler {
@@ -77,8 +83,9 @@ pub mod list_handler{
 
                     write_line(format!("{} {}", DATA_COME_C, DATA_COME_M), stream);
                     
-                    
-                    match self.get_command_res() {
+                    let p : String = get_absolute_path(format!("{}", self.root), format!("{}", self.actual_path) );
+
+                    match self.get_command_res(p) {
                         Some(data) => {
                             write_data(data, &mut s);
                         },
@@ -102,15 +109,19 @@ pub mod list_handler{
         /// 
         /// - *String* result of ls -n convert to string
         /// 
-        fn get_command_res(&self) -> Option<String> {
-            let output = Command::new("ls").arg(format!("{}",self.path)).arg("-n").output().expect("failder to execute process");
+        fn get_command_res(&self, path : String) -> Option<String> {
+            let output = Command::new("ls").arg(format!("{}",path)).arg("-n").output().expect("failder to execute process");
+
 
             if output.status.success(){ 
                 let o = String::from_utf8_lossy(&output.stdout);
 
-                return Some(format!("{}", o));
+                let ascii_friendly_o = o.replace("é", "e");
+                
+
+                return Some(format!("{}", ascii_friendly_o));
             } else {
-                log::info!("ls {} -n failed\n{}", self.path, String::from_utf8_lossy(&output.stderr));
+                log::info!("ls {} -n failed\n{}", path, String::from_utf8_lossy(&output.stderr));
                 return None;
             }         
             

@@ -1,5 +1,6 @@
 mod user;
 mod breaker;
+mod fileSystemHandler;
 
 use log::LevelFilter;
 use std::{env, assert, thread};
@@ -7,6 +8,8 @@ use std::net::TcpListener;
 use user::user::User;
 use breaker::breaker::EscapeHandler;
 use std::sync::mpsc::{self};
+use fileSystemHandler::file_system_handler::*;
+
 ///
 /// # main function of server who handle users connexion
 /// 
@@ -25,6 +28,8 @@ fn main() {
 
     // petit endoirt pour tester plus rapidement mes commandes
     if args.len() == 2 {
+        change_path(String::from("/"), String::from("../truc"));
+
         return;
     }
 

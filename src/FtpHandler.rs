@@ -124,7 +124,7 @@ pub mod ftp_handler{
                 data_stream : None,
                 good_user : false,
                 good_psw : false,
-                actual_path : format!("{}", root),
+                actual_path : format!("/"),
                 root_path : root,
                 file_to_rename : None
             };
@@ -183,7 +183,12 @@ pub mod ftp_handler{
                     }
 
                     
-                    ListHandler{data_stream : dt, session_open : self.session_open(), path : self.get_path()}.execute(&mut self.server_stream);
+                    ListHandler{
+                        data_stream : dt,
+                        session_open : self.session_open(), 
+                        actual_path : self.get_path(),
+                        root : self.get_root()
+                    }.execute(&mut self.server_stream);
                     
                     match &self.data_stream{
                         Some(d) => d.shutdown(Shutdown::Both).expect("shutdown call failed"),
